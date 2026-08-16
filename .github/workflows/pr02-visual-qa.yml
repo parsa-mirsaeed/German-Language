@@ -25,14 +25,42 @@ jobs:
       - run: pnpm exec playwright install --with-deps chromium
 
       - name: Capture live Vercel preview
+        env:
+          PREVIEW_URL: https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles
         run: |
           mkdir -p visual-qa
-          pnpm exec playwright screenshot --browser=chromium --full-page \
-            https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles \
-            visual-qa/canonical-desktop.png
-          pnpm exec playwright screenshot --browser=chromium --device='iPhone 13' --full-page \
-            https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles \
-            visual-qa/canonical-mobile.png
+          node <<'NODE'
+          const { chromium } = require('@playwright/test');
+
+          (async () => {
+            const browser = await chromium.launch();
+            const url = process.env.PREVIEW_URL;
+
+            const desktop = await browser.newPage({
+              viewport: { width: 1440, height: 1000 },
+            });
+            await desktop.goto(url, { waitUntil: 'networkidle' });
+            await desktop.screenshot({
+              path: 'visual-qa/canonical-desktop.png',
+              fullPage: true,
+            });
+            await desktop.close();
+
+            const mobile = await browser.newPage({
+              viewport: { width: 390, height: 844 },
+              isMobile: true,
+              hasTouch: true,
+            });
+            await mobile.goto(url, { waitUntil: 'networkidle' });
+            await mobile.screenshot({
+              path: 'visual-qa/canonical-mobile.png',
+              fullPage: true,
+            });
+            await mobile.close();
+
+            await browser.close();
+          })();
+          NODE
 
       - uses: actions/upload-artifact@v4
         with:
