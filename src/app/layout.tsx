@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body data-motion-policy="reduced-ready">{children}</body>
     </html>
   );
 }

@@ -10,7 +10,7 @@ export default function Home() {
           </span>
           German A1 Grammar
         </Link>
-        <span className="eyebrow">Foundation</span>
+        <span className="eyebrow">Interactive workbook</span>
       </header>
 
       <section className="hero">
@@ -28,10 +28,10 @@ export default function Home() {
         </div>
 
         <aside className="hero-note">
-          <strong>PR 01 foundation</strong>
-          This first implementation proves the content contract, rendering
-          architecture, design tokens, and CI. Final Unit 1 authoring and
-          instructional motion belong to the next planned PRs.
+          <strong>Precision workbook × kinetic grammar atlas</strong>
+          The source workbook’s all-in-one clarity becomes a modern German
+          learning surface with reusable grammar boards, teacher annotations,
+          case-aware visuals, and motion that will teach rather than decorate.
         </aside>
       </section>
     </main>
