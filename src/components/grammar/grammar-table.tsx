@@ -6,7 +6,12 @@ type GrammarTableProps = {
 
 export function GrammarTable({ table }: GrammarTableProps) {
   return (
-    <div className="grammar-table-wrap">
+    <div
+      aria-label={`${table.title}. Scroll horizontally to see all columns when needed.`}
+      className="grammar-table-wrap"
+      role="region"
+      tabIndex={0}
+    >
       <table className="grammar-table">
         <caption>{table.title}</caption>
         <thead>
@@ -27,7 +32,7 @@ export function GrammarTable({ table }: GrammarTableProps) {
                     {cell}
                   </th>
                 ) : (
-                  <td key={cellIndex} lang={cellIndex > 0 ? "de" : undefined}>
+                  <td key={cellIndex} lang="de">
                     {cell}
                   </td>
                 ),

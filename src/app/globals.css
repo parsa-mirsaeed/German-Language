@@ -15,7 +15,7 @@
   --teacher: #9b342f;
   --teacher-soft: #f8e9e4;
   --teacher-line: #d9a8a0;
-  --gold: #b98217;
+  --gold: #76530d;
   --nominative: #315f8c;
   --nominative-soft: #e6eef7;
   --accusative: #96364b;
@@ -45,7 +45,7 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background:
-    radial-gradient(circle at 84% 0%, rgba(185, 130, 23, 0.1), transparent 28rem),
+    radial-gradient(circle at 84% 0%, rgba(118, 83, 13, 0.1), transparent 28rem),
     linear-gradient(180deg, #f8f7f2 0%, var(--canvas) 100%);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -335,7 +335,7 @@ a {
   padding: 1.25rem 1rem;
   color: #f6f3eb;
   background:
-    radial-gradient(circle at 10% 0%, rgba(185, 130, 23, 0.16), transparent 16rem),
+    radial-gradient(circle at 10% 0%, rgba(118, 83, 13, 0.22), transparent 16rem),
     var(--forest-deep);
 }
 
@@ -421,7 +421,7 @@ a {
 .rail-link.is-active {
   color: white;
   background: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 3px 0 0 var(--gold);
+  box-shadow: inset 3px 0 0 #d2a63f;
 }
 
 .rail-link.is-planned {
@@ -544,7 +544,7 @@ a {
 
 .lesson-hero-snapshot > p {
   margin: 0 0 1.2rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.67rem;
   font-weight: 820;
   letter-spacing: 0.12em;
@@ -569,7 +569,7 @@ a {
 }
 
 .snapshot-morph small {
-  color: rgba(255, 255, 255, 0.56);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.67rem;
 }
 
@@ -588,7 +588,7 @@ a {
 }
 
 .snapshot-arrow {
-  color: var(--gold);
+  color: #e4bd5b;
   font-size: 1.6rem;
   animation: arrow-arrive 520ms 180ms ease-out both;
 }
@@ -598,7 +598,7 @@ a {
   flex-wrap: wrap;
   gap: 0.9rem;
   margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 0.68rem;
 }
 
@@ -802,6 +802,10 @@ a {
   overflow-x: auto;
   border: 1px solid var(--line);
   border-radius: 1rem;
+}
+
+.grammar-table-wrap:focus-visible {
+  outline-offset: 3px;
 }
 
 .grammar-table {
@@ -1052,7 +1056,7 @@ a {
 
 .practice-label {
   margin: 0;
-  color: #d8b96d;
+  color: #e8c875;
   font-size: 0.68rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -1086,7 +1090,7 @@ a {
 
 .practice-options li::before {
   content: counter(answers, upper-alpha) ". ";
-  color: #d8b96d;
+  color: #e8c875;
   font-size: 0.72rem;
   font-weight: 800;
 }
@@ -1100,14 +1104,14 @@ a {
 .answer-reveal summary {
   width: fit-content;
   cursor: pointer;
-  color: #e4d7b7;
+  color: #f2e3bc;
   font-size: 0.8rem;
   font-weight: 760;
 }
 
 .answer-reveal div {
   margin-top: 0.75rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .answer-reveal p {
@@ -1222,7 +1226,11 @@ a {
 }
 
 .lesson-footer a {
-  color: var(--forest);
+  color: var(--forest-deep);
+  font-weight: 720;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
 }
 
 .next-map-link {
@@ -1236,7 +1244,7 @@ a {
   background: var(--forest);
   font-size: 0.78rem;
   font-weight: 780;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .contents-trigger,
