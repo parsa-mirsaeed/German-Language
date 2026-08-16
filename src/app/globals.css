@@ -1,0 +1,374 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #17201c;
+  --muted: #617068;
+  --paper: #fffdf8;
+  --canvas: #f2f1eb;
+  --line: #d8d7cf;
+  --forest: #173f35;
+  --forest-soft: #dce9e4;
+  --teacher: #a63232;
+  --teacher-soft: #f8e8e4;
+  --gold: #d4a72c;
+  --radius-sm: 0.6rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --shadow-paper: 0 24px 70px rgba(28, 38, 33, 0.08);
+  --content: 72rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--canvas);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 80% 0%, rgba(212, 167, 44, 0.08), transparent 28rem),
+    linear-gradient(180deg, #f8f7f2 0%, var(--canvas) 100%);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: #d7e9e0;
+}
+
+.site-shell {
+  width: min(calc(100% - 2rem), var(--content));
+  margin: 0 auto;
+  padding: 1.25rem 0 4rem;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  font-weight: 780;
+  letter-spacing: -0.02em;
+}
+
+.brand-mark {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  color: white;
+  background: var(--forest);
+  font-size: 0.92rem;
+  box-shadow: 0 10px 24px rgba(23, 63, 53, 0.18);
+}
+
+.eyebrow {
+  color: var(--forest);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(17rem, 0.7fr);
+  gap: 2rem;
+  align-items: end;
+  padding: clamp(3rem, 8vw, 7rem) 0 3rem;
+}
+
+.hero h1 {
+  max-width: 14ch;
+  margin: 0.55rem 0 1rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 7vw, 6.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.hero-copy {
+  max-width: 44rem;
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.75;
+}
+
+.hero-note {
+  border-top: 1px solid var(--line);
+  padding-top: 1.4rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.hero-note strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--ink);
+}
+
+.primary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  margin-top: 1.25rem;
+  padding: 0 1.15rem;
+  border-radius: 999px;
+  color: white;
+  background: var(--forest);
+  font-weight: 760;
+  text-decoration: none;
+  box-shadow: 0 12px 30px rgba(23, 63, 53, 0.18);
+}
+
+.book-page {
+  overflow: hidden;
+  border: 1px solid rgba(216, 215, 207, 0.9);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 253, 248, 0.96);
+  box-shadow: var(--shadow-paper);
+}
+
+.book-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: end;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.book-header h1 {
+  margin: 0.45rem 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.3rem, 5vw, 4.6rem);
+  letter-spacing: -0.045em;
+}
+
+.level-stamp {
+  min-width: 7rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--forest);
+  border-radius: 999px;
+  color: var(--forest);
+  text-align: center;
+  font-weight: 820;
+}
+
+.lesson-list {
+  display: grid;
+  gap: 0;
+}
+
+.lesson-row {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  padding: 1.35rem clamp(1.25rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+}
+
+.lesson-row:last-child {
+  border-bottom: 0;
+}
+
+.lesson-row:hover {
+  background: #faf8f1;
+}
+
+.lesson-index {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85rem;
+  font-weight: 760;
+}
+
+.lesson-row h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.lesson-row p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.arrow {
+  font-size: 1.45rem;
+}
+
+.lesson-page {
+  padding: clamp(1.5rem, 5vw, 4rem);
+}
+
+.lesson-page h1 {
+  margin: 0.5rem 0 0.6rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: -0.05em;
+}
+
+.lesson-subtitle {
+  margin: 0 0 2rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.formula {
+  margin: 2rem 0;
+  padding: 1.35rem 1.5rem;
+  border: 1px solid var(--forest);
+  border-radius: var(--radius-md);
+  background: var(--forest-soft);
+}
+
+.formula-label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--forest);
+  font-size: 0.75rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.formula code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  font-weight: 700;
+}
+
+.lesson-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.42fr);
+  gap: 2rem;
+}
+
+.section {
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.section h2 {
+  margin: 0 0 0.8rem;
+  font-size: 0.88rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section p,
+.section li {
+  color: #35423c;
+  line-height: 1.7;
+}
+
+.teacher-ink {
+  align-self: start;
+  padding: 1.3rem;
+  border-radius: var(--radius-md);
+  color: #702322;
+  background: var(--teacher-soft);
+  transform: rotate(-0.5deg);
+}
+
+.teacher-ink strong {
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.teacher-ink [dir="rtl"] {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed rgba(166, 50, 50, 0.35);
+  font-family: Tahoma, Arial, sans-serif;
+  line-height: 1.9;
+}
+
+.examples {
+  margin: 0;
+  padding-left: 1.4rem;
+}
+
+.examples li + li {
+  margin-top: 0.8rem;
+}
+
+.footer-note {
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 760px) {
+  .site-shell {
+    width: min(calc(100% - 1rem), var(--content));
+    padding-top: 0.5rem;
+  }
+
+  .hero,
+  .book-header,
+  .lesson-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    gap: 1.5rem;
+    padding-top: 3.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 17vw, 5.5rem);
+  }
+
+  .book-header {
+    gap: 1rem;
+  }
+
+  .level-stamp {
+    justify-self: start;
+  }
+
+  .lesson-row {
+    grid-template-columns: 3.2rem minmax(0, 1fr);
+  }
+
+  .lesson-row .arrow {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
