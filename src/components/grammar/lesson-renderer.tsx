@@ -59,8 +59,12 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <code lang="de">{lesson.formula?.[0]?.pattern}</code>
             )}
             <div className="snapshot-legend">
-              <span><i className="legend-dot nominative" /> subject</span>
-              <span><i className="legend-dot accusative" /> direct object</span>
+              <span>
+                <i className="legend-dot nominative" /> subject
+              </span>
+              <span>
+                <i className="legend-dot accusative" /> direct object
+              </span>
             </div>
           </div>
         </header>
@@ -103,7 +107,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
 
             {lesson.paradigms?.map((table, index) => (
               <LessonSection
-                id={index === 0 ? "table" : undefined}
+                id={index === 0 ? "table" : `table-${index + 1}`}
                 key={table.title}
                 label={String(5 + index).padStart(2, "0")}
                 title="Case / conjugation board"
@@ -121,7 +125,27 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
                 <ContrastBlock contrasts={lesson.contrasts} />
               </LessonSection>
             ) : null}
+          </div>
 
+          <aside
+            aria-label="Teacher notes"
+            className="lesson-margin"
+            style={{ order: 0 }}
+          >
+            {lesson.teacherNotes ? <TeacherInk notes={lesson.teacherNotes} /> : null}
+            <div className="margin-map">
+              <p>On this page</p>
+              <a href="#formula">Formula</a>
+              <a href="#meaning">Meaning</a>
+              <a href="#usage">Usage</a>
+              <a href="#examples">Examples</a>
+              <a href="#mistakes">Mistakes</a>
+              <a href="#speaking">Speaking</a>
+              <a href="#practice">Practice</a>
+            </div>
+          </aside>
+
+          <div className="lesson-main-column">
             <LessonSection label="08" title="Common mistakes" id="mistakes">
               <MistakeCorrection mistakes={lesson.commonMistakes} />
             </LessonSection>
@@ -138,20 +162,6 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <PracticeBlock exercises={lesson.exercises} />
             </LessonSection>
           </div>
-
-          <aside className="lesson-margin" aria-label="Teacher notes">
-            {lesson.teacherNotes ? <TeacherInk notes={lesson.teacherNotes} /> : null}
-            <div className="margin-map">
-              <p>On this page</p>
-              <a href="#formula">Formula</a>
-              <a href="#meaning">Meaning</a>
-              <a href="#usage">Usage</a>
-              <a href="#examples">Examples</a>
-              <a href="#mistakes">Mistakes</a>
-              <a href="#speaking">Speaking</a>
-              <a href="#practice">Practice</a>
-            </div>
-          </aside>
         </div>
 
         <footer className="lesson-footer">
