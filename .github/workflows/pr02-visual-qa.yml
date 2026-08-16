@@ -23,10 +23,23 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm build
 
-      - name: Capture live Vercel preview
+      - name: Start production app
+        run: |
+          pnpm start > /tmp/german-language.log 2>&1 &
+          for i in {1..40}; do
+            if curl --fail --silent http://127.0.0.1:3000/a1/accusative-articles > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/german-language.log
+          exit 1
+
+      - name: Capture production render
         env:
-          PREVIEW_URL: https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles
+          PREVIEW_URL: http://127.0.0.1:3000/a1/accusative-articles
         run: |
           mkdir -p visual-qa
           node <<'NODE'
@@ -64,6 +77,6 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: pr02-vercel-visual-qa
+          name: pr02-production-visual-qa
           path: visual-qa/*.png
           retention-days: 1
