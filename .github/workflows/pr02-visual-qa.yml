@@ -1,0 +1,41 @@
+name: PR02 visual QA capture
+
+on:
+  push:
+    branches:
+      - agent/pr-02-canonical-lesson
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.14.0
+          run_install: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      - name: Capture live Vercel preview
+        run: |
+          mkdir -p visual-qa
+          pnpm exec playwright screenshot --browser=chromium --full-page \
+            https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles \
+            visual-qa/canonical-desktop.png
+          pnpm exec playwright screenshot --browser=chromium --device='iPhone 13' --full-page \
+            https://german-language-bukg1dy18-p-ms-projects-a640fd36.vercel.app/a1/accusative-articles \
+            visual-qa/canonical-mobile.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pr02-vercel-visual-qa
+          path: visual-qa/*.png
+          retention-days: 1
