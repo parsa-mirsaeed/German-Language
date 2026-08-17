@@ -4,29 +4,29 @@ This checklist is the PR 08 release gate. It is intentionally narrower than the 
 
 ## Content and route integrity
 
-- [ ] `pnpm content:validate` passes.
-- [ ] Exactly 12 lessons exist, one per unit-map entry.
-- [ ] Unit 12 remains explicitly labeled `A1-bridge`.
-- [ ] Lesson IDs, slugs, and exercise IDs are unique.
-- [ ] Prerequisites resolve only to earlier lessons/concepts.
-- [ ] Search-index routes exactly equal validated lesson routes.
-- [ ] All 12 direct lesson URLs render successfully.
+- [x] `pnpm content:validate` passes.
+- [x] Exactly 12 lessons exist, one per unit-map entry.
+- [x] Unit 12 remains explicitly labeled `A1-bridge`.
+- [x] Lesson IDs, slugs, and exercise IDs are unique.
+- [x] Prerequisites resolve only to earlier lessons/concepts.
+- [x] Search-index routes exactly equal validated lesson routes.
+- [x] All 12 direct lesson URLs render successfully.
 
 ## Automated application quality
 
-- [ ] Frozen dependency install passes.
-- [ ] ESLint passes.
-- [ ] Strict TypeScript passes.
-- [ ] Unit/component tests pass.
-- [ ] Production build passes.
-- [ ] Deterministic search tests pass.
-- [ ] Deterministic exercise/progress tests pass.
-- [ ] No-JavaScript reading smoke passes.
-- [ ] Keyboard search/practice/speaking paths pass.
-- [ ] Mobile contents and focus-restoration checks pass.
-- [ ] Reduced-motion checks pass.
-- [ ] Representative axe scans pass.
-- [ ] Representative 390px and 1440px document-overflow checks pass.
+- [x] Frozen dependency install passes.
+- [x] ESLint passes.
+- [x] Strict TypeScript passes.
+- [x] Unit/component tests pass.
+- [x] Production build passes.
+- [x] Deterministic search tests pass.
+- [x] Deterministic exercise/progress tests pass.
+- [x] No-JavaScript reading smoke passes.
+- [x] Keyboard search/practice/speaking paths pass.
+- [x] Mobile contents and focus-restoration checks pass.
+- [x] Reduced-motion checks pass.
+- [x] Representative axe scans pass.
+- [x] Representative 390px and 1440px document-overflow checks pass.
 
 ## Privacy and telemetry posture
 
@@ -39,14 +39,25 @@ This checklist is the PR 08 release gate. It is intentionally narrower than the 
 
 ## Deployment rehearsal
 
-- [ ] Vercel Preview for PR 08 reports Ready on the final head.
-- [ ] No unresolved launch-blocking review/toolbar feedback remains.
-- [ ] Desktop and mobile production-render visual QA has been inspected.
-- [ ] Temporary visual-QA workflow/artifacts are not left in the release branch.
-- [ ] PR 08 is merged only after the final clean-head CI and Preview gates pass.
-- [ ] The merged `main` commit receives a successful CI run.
-- [ ] The merged `main` commit receives a successful Vercel deployment.
+- [x] Vercel Preview for the reviewed PR 08 head reports Ready.
+- [x] No unresolved launch-blocking review or Vercel toolbar feedback remains.
+- [x] Desktop and mobile production-render visual QA has been inspected.
+- [ ] Temporary visual-QA workflow is removed from the release branch.
+- [ ] Final workflow-free PR head passes CI and Vercel Preview.
+
+## Visual QA notes
+
+The production build was captured at 1440×1000 and 390×844 for both the A1 map and canonical lesson. Review confirmed the 12-unit map, lesson hierarchy, Teacher Ink sequence, search/contents controls, grammar labs, speaking mode, and four practice modes remain readable without clipping or unintended document-level horizontal overflow.
+
+## Post-merge verification
+
+After PR 08 merges, record the merge SHA in the release report and verify:
+
+- the `main` CI run completes successfully;
+- the Vercel deployment for that same `main` commit completes successfully.
+
+These post-merge checks are evidence for the shipped commit and therefore are recorded after this PR-level checklist is signed off.
 
 ## Release decision
 
-Ship only when every unchecked item above has current-head evidence. The PR description should record the final CI run, Vercel Preview state, visual QA notes, and any accepted limitations.
+PR 08 is approved for merge only after the two remaining deployment-rehearsal boxes above are checked on the workflow-free final head. No accepted launch-blocking limitation remains.
