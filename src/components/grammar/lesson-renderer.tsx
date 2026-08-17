@@ -20,6 +20,10 @@ type LessonRendererProps = {
 export function LessonRenderer({ lesson }: LessonRendererProps) {
   const unit = a1UnitMap.find((candidate) => candidate.unit === lesson.unit);
   const heroRow = lesson.paradigms?.[0]?.rows?.[0];
+  const showInteractionLab = lesson.slug === "accusative-articles";
+  const mistakesLabel = showInteractionLab ? "09" : "08";
+  const speakingLabel = showInteractionLab ? "10" : "09";
+  const practiceLabel = showInteractionLab ? "11" : "10";
 
   return (
     <main className="lesson-canvas">
@@ -141,7 +145,9 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <a href="#meaning">Meaning</a>
               <a href="#usage">Usage</a>
               <a href="#examples">Examples</a>
-              <a href="#interaction-lab">Interactive lab</a>
+              {showInteractionLab ? (
+                <a href="#interaction-lab">Interactive lab</a>
+              ) : null}
               <a href="#mistakes">Mistakes</a>
               <a href="#speaking">Speaking</a>
               <a href="#practice">Practice</a>
@@ -149,20 +155,26 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
           </aside>
 
           <div className="lesson-main-column">
-            <LessonSection label="08" title="Interactive grammar lab" id="interaction-lab">
-              <p className="section-lede">
-                Manipulate the structure, then say the resulting German sentence aloud.
-                Every interaction has a keyboard-first alternative and remains usable with
-                reduced motion.
-              </p>
-              <GrammarInteractionLab />
-            </LessonSection>
+            {showInteractionLab ? (
+              <LessonSection
+                label="08"
+                title="Interactive grammar lab"
+                id="interaction-lab"
+              >
+                <p className="section-lede">
+                  Manipulate the structure, then say the resulting German sentence aloud.
+                  Every interaction has a keyboard-first alternative and remains usable with
+                  reduced motion.
+                </p>
+                <GrammarInteractionLab />
+              </LessonSection>
+            ) : null}
 
-            <LessonSection label="09" title="Common mistakes" id="mistakes">
+            <LessonSection label={mistakesLabel} title="Common mistakes" id="mistakes">
               <MistakeCorrection mistakes={lesson.commonMistakes} />
             </LessonSection>
 
-            <LessonSection label="10" title="Speaking transfer" id="speaking">
+            <LessonSection label={speakingLabel} title="Speaking transfer" id="speaking">
               <p className="section-lede">
                 Say these aloud. The goal is to make the grammar available while
                 you are speaking, not only while you are recognizing it.
@@ -170,7 +182,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <SpeakingPrompt prompts={lesson.speakingPrompts} />
             </LessonSection>
 
-            <LessonSection label="11" title="Micro practice" id="practice">
+            <LessonSection label={practiceLabel} title="Micro practice" id="practice">
               <PracticeBlock exercises={lesson.exercises} />
             </LessonSection>
           </div>
