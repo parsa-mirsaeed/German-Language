@@ -10,20 +10,21 @@ import {
 
 type BookShellProps = {
   children: ReactNode;
-  currentUnit: number;
+  currentLessonSlug: string;
 };
 
-export function BookShell({ children, currentUnit }: BookShellProps) {
+export function BookShell({ children, currentLessonSlug }: BookShellProps) {
   const items: BookNavItem[] = a1UnitMap.map((unit) => {
     const lesson = a1Lessons.find((candidate) => candidate.unit === unit.unit);
+    const href = lesson ? `/a1/${lesson.slug}` : undefined;
 
     return {
       unit: unit.unit,
       title: unit.title,
       shortTitle: unit.shortTitle,
       goal: unit.goal,
-      href: lesson ? `/a1/${lesson.slug}` : undefined,
-      active: unit.unit === currentUnit,
+      href,
+      active: lesson?.slug === currentLessonSlug,
     };
   });
 
