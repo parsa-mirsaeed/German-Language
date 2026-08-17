@@ -10,7 +10,10 @@ import {
   useState,
 } from "react";
 import type { LessonLevel } from "@/content/schema/content-types";
-import { a1SearchIndex, searchLessons } from "@/lib/search";
+import {
+  searchLessons,
+  type SearchDocument,
+} from "@/lib/search-core";
 
 const levelOptions: Array<{ value: "all" | LessonLevel; label: string }> = [
   { value: "all", label: "All A1" },
@@ -19,7 +22,11 @@ const levelOptions: Array<{ value: "all" | LessonLevel; label: string }> = [
   { value: "A1-bridge", label: "A1 bridge" },
 ];
 
-export function SearchCommand() {
+type SearchCommandProps = {
+  index: readonly SearchDocument[];
+};
+
+export function SearchCommand({ index }: SearchCommandProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<"all" | LessonLevel>("all");
@@ -106,11 +113,11 @@ export function SearchCommand() {
 
   const results = useMemo(
     () =>
-      searchLessons(a1SearchIndex, query, {
+      searchLessons(index, query, {
         level: level === "all" ? undefined : level,
         limit: 8,
       }),
-    [level, query],
+    [index, level, query],
   );
 
   return (
