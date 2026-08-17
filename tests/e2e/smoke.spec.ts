@@ -51,16 +51,19 @@ test("grammar interaction engine supports keyboard-first transformations", async
   await page.goto(canonicalLesson);
   await page.getByRole("heading", { name: "Interactive grammar lab" }).scrollIntoViewIfNeeded();
 
-  await page.getByRole("button", { name: "Heute" }).click();
+  await page.getByRole("button", { name: "Heute", exact: true }).click();
   await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
 
-  await page.getByRole("button", { name: "Perfekt" }).click();
+  await page.getByRole("button", { name: "Perfekt", exact: true }).click();
   await expect(page.getByText(/Ich habe gestern Kaffee getrunken/)).toBeVisible();
 
-  await page.getByRole("button", { name: "Dativ" }).click();
+  await page.getByRole("button", { name: "Dativ", exact: true }).click();
   await expect(page.locator(".article-morph strong")).toHaveText("dem");
 
-  const caseToken = page.getByRole("button", { name: /die Frau Subject lane/i });
+  const caseToken = page.getByRole("button", {
+    name: /die Frau Subject lane/i,
+    exact: true,
+  });
   await caseToken.focus();
   await page.keyboard.press("ArrowRight");
   await expect(page.getByText(/die Frau: Object lane · Akkusativ/)).toBeVisible();
@@ -113,7 +116,7 @@ test("reduced motion keeps lesson, navigation, and grammar labs fully usable", a
   await expect(page.getByRole("dialog", { name: "Contents" })).toBeVisible();
   await page.keyboard.press("Escape");
 
-  await page.getByRole("button", { name: "Heute" }).click();
+  await page.getByRole("button", { name: "Heute", exact: true }).click();
   await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
   await expect(page.locator(".article-morph strong")).toHaveCSS("animation-name", "none");
 });
