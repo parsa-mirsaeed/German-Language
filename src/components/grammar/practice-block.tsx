@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { Exercise } from "@/content/schema/content-types";
 import {
   expectedExerciseAnswer,
@@ -10,11 +10,11 @@ import {
 } from "@/lib/exercises";
 import {
   completedExerciseCount,
-  emptyProgress,
-  readProgress,
+  getProgressSnapshot,
+  getServerProgressSnapshot,
   recordExerciseResult,
+  subscribeProgress,
   writeProgress,
-  type ProgressState,
 } from "@/lib/progress";
 
 type PracticeBlockProps = {
@@ -41,13 +41,11 @@ function exerciseTypeLabel(exercise: Exercise): string {
 export function PracticeBlock({ exercises, lessonId }: PracticeBlockProps) {
   const [responses, setResponses] = useState<ResponseState>({});
   const [results, setResults] = useState<ResultState>({});
-  const [progress, setProgress] = useState<ProgressState>(() => emptyProgress());
-  const [hydrated, setHydrated] = useState(false);
-
-  useEffect(() => {
-    setProgress(readProgress());
-    setHydrated(true);
-  }, []);
+  const progress = useSyncExternalStore(
+    subscribeProgress,
+    getProgressSnapshot,
+    getServerProgressSnapshot,
+  );
 
   function updateResponse(exerciseId: string, value: ExerciseResponse) {
     setResponses((current) => ({ ...current, [exerciseId]: value }));
@@ -66,14 +64,9 @@ export function PracticeBlock({ exercises, lessonId }: PracticeBlockProps) {
     const result = gradeExercise(exercise, response);
     setResults((current) => ({ ...current, [exercise.id]: result }));
 
-    const nextProgress = recordExerciseResult(
-      progress,
-      lessonId,
-      exercise.id,
-      result.correct,
+    writeProgress(
+      recordExerciseResult(progress, lessonId, exercise.id, result.correct),
     );
-    setProgress(nextProgress);
-    writeProgress(nextProgress);
   }
 
   const completed = completedExerciseCount(progress, lessonId);
@@ -83,7 +76,7 @@ export function PracticeBlock({ exercises, lessonId }: PracticeBlockProps) {
       <div className="practice-progress" aria-live="polite">
         <span>Lesson practice</span>
         <strong>
-          {hydrated ? completed : 0}/{exercises.length} correct
+          {completed}/{exercises.length} correct
         </strong>
       </div>
 
