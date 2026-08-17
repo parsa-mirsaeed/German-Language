@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SearchCommand } from "@/components/navigation/search-command";
 import { a1Lessons } from "@/content/a1";
 import { a1UnitMap } from "@/content/a1/unit-map";
 
@@ -12,7 +13,9 @@ export default function A1Page() {
           </span>
           German A1 Grammar
         </Link>
-        <span className="eyebrow">A1 map</span>
+        <div className="map-search">
+          <SearchCommand />
+        </div>
       </header>
 
       <section className="map-page">

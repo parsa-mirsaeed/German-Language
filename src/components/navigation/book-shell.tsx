@@ -7,6 +7,7 @@ import {
   MobileContentsSheet,
   type BookNavItem,
 } from "./mobile-contents-sheet";
+import { SearchCommand } from "./search-command";
 
 type BookShellProps = {
   children: ReactNode;
@@ -32,12 +33,15 @@ export function BookShell({ children, currentLessonSlug }: BookShellProps) {
     <div className="book-shell">
       <BookRail items={items} />
       <div className="book-stage">
-        <header className="mobile-book-bar">
+        <header className="book-utility-bar">
           <Link className="mobile-brand" href="/a1">
             <span aria-hidden="true">A1</span>
             German Grammar
           </Link>
-          <MobileContentsSheet items={items} />
+          <div className="book-utility-actions">
+            <SearchCommand />
+            <MobileContentsSheet items={items} />
+          </div>
         </header>
         {children}
       </div>
