@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { a1SearchIndex, searchLessons } from "@/lib/search";
+import { a1SearchIndex } from "@/lib/search";
+import { searchLessons } from "@/lib/search-core";
 
 describe("A1 search index", () => {
   it("builds one stable document for every lesson route", () => {
