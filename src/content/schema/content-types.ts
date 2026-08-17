@@ -61,16 +61,41 @@ export type SpeakingPrompt = {
   support?: string;
 };
 
-export type MultipleChoiceExercise = {
+export type ExerciseBase = {
   id: string;
-  type: "multiple-choice";
   prompt: string;
-  options: string[];
-  answer: string;
   explanation: string;
 };
 
-export type Exercise = MultipleChoiceExercise;
+export type MultipleChoiceExercise = ExerciseBase & {
+  type: "multiple-choice";
+  options: string[];
+  answer: string;
+};
+
+export type FillBlankExercise = ExerciseBase & {
+  type: "fill-blank";
+  answers: string[];
+  placeholder?: string;
+};
+
+export type SentenceBuilderExercise = ExerciseBase & {
+  type: "sentence-builder";
+  tokens: string[];
+  answer: string[];
+};
+
+export type ErrorCorrectionExercise = ExerciseBase & {
+  type: "error-correction";
+  incorrect: string;
+  answer: string;
+};
+
+export type Exercise =
+  | MultipleChoiceExercise
+  | FillBlankExercise
+  | SentenceBuilderExercise
+  | ErrorCorrectionExercise;
 
 export type ContentReference = {
   label: string;
