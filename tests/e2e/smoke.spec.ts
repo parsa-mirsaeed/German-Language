@@ -2,20 +2,39 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 const canonicalLesson = "/a1/accusative-articles";
+const unitOneToSix = [
+  ["/a1/verb-second-basics", "Verb auf Position 2"],
+  ["/a1/present-tense-conjugation", "Präsens: Verben konjugieren"],
+  ["/a1/nouns-gender-articles-plurals", "Nomen, Genus und Artikel"],
+  ["/a1/negation-nicht-kein", "Negation: nicht und kein"],
+  [canonicalLesson, "Akkusativ: der wird den"],
+  ["/a1/possession-and-pronouns", "Possession: mein, dein, sein, ihr"],
+] as const;
 
-test("A1 map opens the canonical lesson", async ({ page }) => {
+test("A1 map exposes Units 1 through 6 and opens the canonical lesson", async ({ page }) => {
   await page.goto("/a1");
 
   await expect(
     page.getByRole("heading", { level: 1, name: "German A1" }),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open lesson" })).toHaveCount(6);
 
-  await page.getByRole("link", { name: /Open canonical lesson/i }).click();
+  await page.locator('a[href="/a1/accusative-articles"]').click();
 
   await expect(
     page.getByRole("heading", { level: 1, name: "Akkusativ: der wird den" }),
   ).toBeVisible();
-  await expect(page.getByText(/der → den/)).toBeVisible();
+});
+
+test("every Unit 1 through 6 lesson is direct-linkable and complete", async ({ page }) => {
+  for (const [route, title] of unitOneToSix) {
+    await page.goto(route);
+    await expect(page.getByRole("heading", { level: 1, name: title })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Formula / structure" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Common mistakes" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Speaking transfer" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Micro practice" })).toBeVisible();
+  }
 });
 
 test("canonical lesson exposes the complete learning sequence and passes axe", async ({
@@ -73,6 +92,11 @@ test("grammar interaction engine supports keyboard-first transformations", async
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
     .analyze();
   expect(accessibility.violations).toEqual([]);
+});
+
+test("noncanonical lessons do not leak prototype grammar labs", async ({ page }) => {
+  await page.goto("/a1/verb-second-basics");
+  await expect(page.getByRole("heading", { name: "Interactive grammar lab" })).toHaveCount(0);
 });
 
 test("mobile contents sheet is keyboard reachable and accessible", async ({ page }) => {
