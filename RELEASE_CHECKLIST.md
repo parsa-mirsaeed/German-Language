@@ -42,12 +42,14 @@ This checklist is the PR 08 release gate. It is intentionally narrower than the 
 - [x] Vercel Preview for the reviewed PR 08 head reports Ready.
 - [x] No unresolved launch-blocking review or Vercel toolbar feedback remains.
 - [x] Desktop and mobile production-render visual QA has been inspected.
-- [ ] Temporary visual-QA workflow is removed from the release branch.
-- [ ] Final workflow-free PR head passes CI and Vercel Preview.
+- [x] Temporary visual-QA workflow is removed from the release branch.
+- [x] Workflow-free PR head passed permanent CI and Vercel Preview before checklist sign-off.
 
 ## Visual QA notes
 
 The production build was captured at 1440×1000 and 390×844 for both the A1 map and canonical lesson. Review confirmed the 12-unit map, lesson hierarchy, Teacher Ink sequence, search/contents controls, grammar labs, speaking mode, and four practice modes remain readable without clipping or unintended document-level horizontal overflow.
+
+The workflow-free release candidate `9c0201860f1ecae1136e9f1c3ed8d7335e781abb` passed GitHub Actions CI run `32030811713` and a successful Vercel Preview. This checklist-only commit must receive the same exact-head gates before merge.
 
 ## Post-merge verification
 
@@ -60,4 +62,4 @@ These post-merge checks are evidence for the shipped commit and therefore are re
 
 ## Release decision
 
-PR 08 is approved for merge only after the two remaining deployment-rehearsal boxes above are checked on the workflow-free final head. No accepted launch-blocking limitation remains.
+PR 08 is signed off for merge once this documentation-only final head receives the same permanent CI and Vercel Preview gates. No accepted launch-blocking limitation remains.
