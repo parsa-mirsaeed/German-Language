@@ -213,7 +213,11 @@ function SentenceBuilder({ exercise, answer, onChange }: SentenceBuilderProps) {
       <div className="sentence-builder-output" aria-live="polite" lang="de">
         {answer.length > 0 ? answer.join(" ") : "Build the sentence here"}
       </div>
-      <div className="sentence-builder-bank" aria-label="Available sentence tokens">
+      <div
+        aria-label="Available sentence tokens"
+        className="sentence-builder-bank"
+        role="group"
+      >
         {available.map(({ token, index }) => (
           <button
             key={`${token}-${index}`}
