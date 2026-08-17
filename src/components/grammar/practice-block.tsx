@@ -14,7 +14,7 @@ import {
   getServerProgressSnapshot,
   recordExerciseResult,
   subscribeProgress,
-  writeProgress,
+  updateProgress,
 } from "@/lib/progress";
 
 type PracticeBlockProps = {
@@ -64,8 +64,8 @@ export function PracticeBlock({ exercises, lessonId }: PracticeBlockProps) {
     const result = gradeExercise(exercise, response);
     setResults((current) => ({ ...current, [exercise.id]: result }));
 
-    writeProgress(
-      recordExerciseResult(progress, lessonId, exercise.id, result.correct),
+    updateProgress((current) =>
+      recordExerciseResult(current, lessonId, exercise.id, result.correct),
     );
   }
 
