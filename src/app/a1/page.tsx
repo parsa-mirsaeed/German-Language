@@ -1,24 +1,10 @@
 import Link from "next/link";
 import { a1Lessons } from "@/content/a1";
-
-const unitNames = [
-  "The German Sentence Engine",
-  "Present Tense and Verb Conjugation",
-  "Nouns, Gender, Articles, and Plurals",
-  "Negation: nicht and kein",
-  "Accusative and Direct Objects",
-  "Possession and Pronoun Systems",
-  "Modal Verbs and the Sentence Bracket",
-  "Separable Verbs, Time, and Word Order",
-  "Dative and Dative Prepositions",
-  "Place, Direction, and Two-Way Prepositions",
-  "Commands, Requests, and Connectors",
-  "Perfekt, Basic Past, and A1 Integration",
-];
+import { a1UnitMap } from "@/content/a1/unit-map";
 
 export default function A1Page() {
   return (
-    <main className="site-shell">
+    <main className="site-shell map-shell">
       <header className="topbar">
         <Link className="brand" href="/">
           <span className="brand-mark" aria-hidden="true">
@@ -29,58 +15,49 @@ export default function A1Page() {
         <span className="eyebrow">A1 map</span>
       </header>
 
-      <section className="book-page">
-        <header className="book-header">
+      <section className="map-page">
+        <header className="map-header">
           <div>
-            <p className="eyebrow">12-unit learning map</p>
+            <p className="eyebrow">12-unit grammar atlas</p>
             <h1>German A1</h1>
+            <p>
+              One visible route from first sentence structure to completed-past
+              storytelling. Open lessons stay complete on one coherent surface.
+            </p>
           </div>
-          <div className="level-stamp">A1.1 → A1.2</div>
+          <div className="map-stamp">
+            <strong>A1.1 → A1.2</strong>
+            <span>12 units · one system</span>
+          </div>
         </header>
 
-        <div className="lesson-list">
-          {unitNames.map((name, index) => {
-            const unit = index + 1;
-            const sample = a1Lessons.find((lesson) => lesson.unit === unit);
-
-            if (sample) {
-              return (
-                <Link
-                  className="lesson-row"
-                  href={`/a1/${sample.slug}`}
-                  key={name}
-                >
-                  <span className="lesson-index">
-                    UNIT {String(unit).padStart(2, "0")}
-                  </span>
-                  <span>
-                    <h2>{name}</h2>
-                    <p>
-                      Foundation fixture available: {sample.title.de} —{" "}
-                      {sample.title.en}
-                    </p>
-                  </span>
-                  <span className="arrow" aria-hidden="true">
-                    →
-                  </span>
-                </Link>
-              );
-            }
+        <ol className="unit-map">
+          {a1UnitMap.map((unit) => {
+            const lesson = a1Lessons.find((candidate) => candidate.unit === unit.unit);
+            const isCanonical = lesson?.slug === "accusative-articles";
 
             return (
-              <div className="lesson-row" key={name}>
-                <span className="lesson-index">
-                  UNIT {String(unit).padStart(2, "0")}
+              <li className={lesson ? "unit-row is-available" : "unit-row"} key={unit.unit}>
+                <span className="unit-number">
+                  {String(unit.unit).padStart(2, "0")}
                 </span>
-                <span>
-                  <h2>{name}</h2>
-                  <p>Planned content — authored in the dedicated content PR.</p>
-                </span>
-                <span className="eyebrow">planned</span>
-              </div>
+                <div className="unit-copy">
+                  <p>{unit.shortTitle}</p>
+                  <h2>{unit.title}</h2>
+                  <span>{unit.goal}</span>
+                </div>
+                {lesson ? (
+                  <Link className="unit-action" href={`/a1/${lesson.slug}`}>
+                    <span>{isCanonical ? "Open canonical lesson" : "Open sample"}</span>
+                    <strong aria-hidden="true">↗</strong>
+                  </Link>
+                ) : (
+                  <span className="unit-status">Planned</span>
+                )}
+              </li>
             );
           })}
-        </div>
+        </ol>
       </section>
     </main>
   );
