@@ -148,15 +148,28 @@ export const lessonSchema = z
         });
       }
 
-      if (
-        exercise.type === "sentence-builder" &&
-        exercise.answer.some((token) => !exercise.tokens.includes(token))
-      ) {
-        ctx.addIssue({
-          code: "custom",
-          path: ["exercises", exercise.id, "answer"],
-          message: "Sentence-builder answer tokens must come from the token bank.",
-        });
+      if (exercise.type === "sentence-builder") {
+        const availableCounts = new Map<string, number>();
+        const usedCounts = new Map<string, number>();
+
+        for (const token of exercise.tokens) {
+          availableCounts.set(token, (availableCounts.get(token) ?? 0) + 1);
+        }
+
+        for (const token of exercise.answer) {
+          const used = (usedCounts.get(token) ?? 0) + 1;
+          usedCounts.set(token, used);
+
+          if (used > (availableCounts.get(token) ?? 0)) {
+            ctx.addIssue({
+              code: "custom",
+              path: ["exercises", exercise.id, "answer"],
+              message:
+                "Sentence-builder answers cannot use a token more times than the token bank provides it.",
+            });
+            break;
+          }
+        }
       }
     }
 
