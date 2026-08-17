@@ -28,17 +28,63 @@ function emptyLessonProgress(): LessonProgress {
   return { exercises: {}, speaking: {} };
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
 export function parseProgress(raw: string | null): ProgressState {
   if (!raw) {
     return emptyProgress();
   }
 
   try {
-    const parsed = JSON.parse(raw) as Partial<ProgressState>;
-    if (parsed.version !== 1 || !parsed.lessons || typeof parsed.lessons !== "object") {
+    const parsed: unknown = JSON.parse(raw);
+    if (!isRecord(parsed) || parsed.version !== 1 || !isRecord(parsed.lessons)) {
       return emptyProgress();
     }
-    return parsed as ProgressState;
+
+    const lessons: Record<string, LessonProgress> = {};
+
+    for (const [lessonId, lessonValue] of Object.entries(parsed.lessons)) {
+      if (!isRecord(lessonValue)) {
+        continue;
+      }
+
+      const lesson = emptyLessonProgress();
+
+      if (isRecord(lessonValue.exercises)) {
+        for (const [exerciseId, exerciseValue] of Object.entries(
+          lessonValue.exercises,
+        )) {
+          if (
+            isRecord(exerciseValue) &&
+            Number.isInteger(exerciseValue.attempts) &&
+            typeof exerciseValue.attempts === "number" &&
+            exerciseValue.attempts >= 0 &&
+            typeof exerciseValue.correct === "boolean"
+          ) {
+            lesson.exercises[exerciseId] = {
+              attempts: exerciseValue.attempts,
+              correct: exerciseValue.correct,
+            };
+          }
+        }
+      }
+
+      if (isRecord(lessonValue.speaking)) {
+        for (const [promptIndex, practiced] of Object.entries(
+          lessonValue.speaking,
+        )) {
+          if (typeof practiced === "boolean") {
+            lesson.speaking[promptIndex] = practiced;
+          }
+        }
+      }
+
+      lessons[lessonId] = lesson;
+    }
+
+    return { version: 1, lessons };
   } catch {
     return emptyProgress();
   }
@@ -96,6 +142,16 @@ export function writeProgress(progress: ProgressState): void {
   cachedProgress = progress;
   window.localStorage.setItem(PROGRESS_STORAGE_KEY, raw);
   window.dispatchEvent(new Event(PROGRESS_CHANGE_EVENT));
+}
+
+export function updateProgress(
+  updater: (current: ProgressState) => ProgressState,
+): void {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  writeProgress(updater(getProgressSnapshot()));
 }
 
 export function recordExerciseResult(
