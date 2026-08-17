@@ -1,9 +1,7 @@
 name: PR08 release visual QA
 
 on:
-  push:
-    branches:
-      - agent/pr-08-release-quality
+  pull_request:
 
 permissions:
   contents: read
