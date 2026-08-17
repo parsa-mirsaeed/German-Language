@@ -1,15 +1,33 @@
 import { a1Lessons } from "../src/content/a1";
+import { a1UnitMap } from "../src/content/a1/unit-map";
 import { lessonSchema } from "../src/content/schema/lesson-schema";
+import { a1SearchIndex } from "../src/lib/search";
 
 const errors: string[] = [];
 const ids = new Set<string>();
 const slugs = new Set<string>();
+const exerciseIds = new Set<string>();
 const introduced = new Set<string>();
 const completedLessonIds = new Set<string>();
 
+if (a1Lessons.length !== 12) {
+  errors.push(`Expected exactly 12 A1 lessons; found ${a1Lessons.length}`);
+}
+
+if (a1UnitMap.length !== 12) {
+  errors.push(`Expected exactly 12 unit-map entries; found ${a1UnitMap.length}`);
+}
+
 for (let unit = 1; unit <= 12; unit += 1) {
-  if (!a1Lessons.some((lesson) => lesson.unit === unit)) {
-    errors.push(`Unit ${unit}: missing required A1 lesson coverage`);
+  const lessonsForUnit = a1Lessons.filter((lesson) => lesson.unit === unit);
+  if (lessonsForUnit.length !== 1) {
+    errors.push(
+      `Unit ${unit}: expected exactly one lesson, found ${lessonsForUnit.length}`,
+    );
+  }
+
+  if (!a1UnitMap.some((entry) => entry.unit === unit)) {
+    errors.push(`Unit ${unit}: missing from unit map`);
   }
 }
 
@@ -47,6 +65,13 @@ for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
     exampleSet.add(normalized);
   }
 
+  for (const exercise of lesson.exercises) {
+    if (exerciseIds.has(exercise.id)) {
+      errors.push(`${exercise.id}: duplicate exercise id across lessons`);
+    }
+    exerciseIds.add(exercise.id);
+  }
+
   if (lesson.examples.length < 5) {
     errors.push(`${lesson.id}: complete A1 lessons need at least 5 examples`);
   }
@@ -71,6 +96,15 @@ for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
   }
 }
 
+const lessonRoutes = a1Lessons
+  .map((lesson) => `/a1/${lesson.slug}`)
+  .sort();
+const searchRoutes = a1SearchIndex.map((document) => document.href).sort();
+
+if (JSON.stringify(searchRoutes) !== JSON.stringify(lessonRoutes)) {
+  errors.push("Search-index routes do not exactly match the validated lesson routes");
+}
+
 if (errors.length > 0) {
   console.error("Content validation failed:\n");
   for (const error of errors) {
@@ -80,5 +114,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Content validation passed for ${a1Lessons.length} lessons across Units 1–12 with prerequisite and coverage checks.`,
+  `Content validation passed for ${a1Lessons.length} lessons, ${exerciseIds.size} exercises, and a matching ${a1SearchIndex.length}-document search index.`,
 );

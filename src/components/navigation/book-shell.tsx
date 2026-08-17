@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { a1Lessons } from "@/content/a1";
 import { a1UnitMap } from "@/content/a1/unit-map";
+import { a1SearchIndex } from "@/lib/search";
 import { BookRail } from "./book-rail";
 import {
   MobileContentsSheet,
@@ -39,7 +40,7 @@ export function BookShell({ children, currentLessonSlug }: BookShellProps) {
             German Grammar
           </Link>
           <div className="book-utility-actions">
-            <SearchCommand />
+            <SearchCommand index={a1SearchIndex} />
             <MobileContentsSheet items={items} />
           </div>
         </header>
