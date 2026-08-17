@@ -1,0 +1,334 @@
+.interaction-labs {
+  display: grid;
+  gap: 1rem;
+}
+
+.interaction-card {
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background:
+    linear-gradient(135deg, rgba(220, 233, 228, 0.28), transparent 48%),
+    var(--paper-strong);
+}
+
+.interaction-heading {
+  display: grid;
+  gap: 0.28rem;
+  margin-bottom: 1rem;
+}
+
+.interaction-heading p {
+  margin: 0;
+  color: var(--forest);
+  font-size: 0.68rem;
+  font-weight: 820;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.interaction-heading h3 {
+  max-width: 42rem;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.15rem, 2.3vw, 1.55rem);
+  line-height: 1.25;
+}
+
+.interaction-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.interaction-choice,
+.case-token-actions button {
+  min-height: 2.45rem;
+  padding: 0.48rem 0.78rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink-soft);
+  background: var(--paper-strong);
+  font-weight: 760;
+  cursor: pointer;
+}
+
+.interaction-choice[aria-pressed="true"] {
+  border-color: var(--forest);
+  color: white;
+  background: var(--forest);
+}
+
+.interaction-choice:hover:not([aria-pressed="true"]),
+.case-token-actions button:hover:not(:disabled) {
+  border-color: var(--forest);
+  color: var(--forest);
+}
+
+.v2-rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v2-rail li {
+  position: relative;
+  display: grid;
+  min-height: 6.2rem;
+  align-content: space-between;
+  gap: 0.3rem;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: #fbfaf6;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.v2-rail li:nth-child(2) {
+  border-color: var(--verb);
+  background: #eef1fb;
+}
+
+.v2-rail li > span {
+  color: var(--muted);
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.67rem;
+}
+
+.v2-rail strong {
+  font-size: 1rem;
+}
+
+.v2-rail small {
+  color: var(--verb);
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.interaction-status,
+.interaction-instruction {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.79rem;
+  line-height: 1.55;
+}
+
+.sentence-bracket {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.55rem;
+  align-items: stretch;
+  margin-top: 1rem;
+}
+
+.sentence-bracket > * {
+  display: grid;
+  place-items: center;
+  min-height: 4rem;
+  padding: 0.75rem;
+  border-radius: 0.8rem;
+}
+
+.sentence-bracket strong {
+  color: white;
+  background: var(--forest);
+}
+
+.sentence-bracket span {
+  border: 1px dashed var(--line-strong);
+  color: var(--ink-soft);
+  background: #fbfaf6;
+}
+
+.interaction-grid-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.interaction-grid-controls fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.interaction-grid-controls legend {
+  margin-bottom: 0.55rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 780;
+}
+
+.article-morph {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  text-align: center;
+  background: #fbfaf6;
+}
+
+.article-morph strong {
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  place-items: center;
+  border-radius: 50%;
+  color: white;
+  background: var(--accusative);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  animation: article-pop 220ms ease-out both;
+}
+
+.article-morph span {
+  color: var(--muted);
+  font-size: 0.73rem;
+  font-weight: 760;
+  text-transform: capitalize;
+}
+
+.case-lanes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.case-lane {
+  min-height: 10rem;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: #fbfaf6;
+}
+
+.case-lane[data-lane="subject"] {
+  box-shadow: inset 0 3px 0 var(--nominative);
+}
+
+.case-lane[data-lane="object"] {
+  box-shadow: inset 0 3px 0 var(--accusative);
+}
+
+.case-lane[data-lane="other"] {
+  box-shadow: inset 0 3px 0 var(--gold);
+}
+
+.case-lane h4 {
+  min-height: 2rem;
+  margin: 0 0 0.65rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.case-lane > div {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.case-token-wrap {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.case-token {
+  display: grid;
+  width: 100%;
+  gap: 0.15rem;
+  padding: 0.72rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 0.75rem;
+  color: var(--ink);
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.case-token:hover,
+.case-token:focus-visible {
+  box-shadow: 0 8px 20px rgba(23, 63, 53, 0.1);
+  transform: translateY(-1px);
+}
+
+.case-token small {
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+.case-token-actions {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: flex-end;
+}
+
+.case-token-actions button {
+  display: grid;
+  width: 2.2rem;
+  min-height: 2.2rem;
+  padding: 0;
+  place-items: center;
+}
+
+.case-token-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+@keyframes article-pop {
+  from {
+    opacity: 0.35;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 760px) {
+  .v2-rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sentence-bracket,
+  .interaction-grid-controls,
+  .case-lanes {
+    grid-template-columns: 1fr;
+  }
+
+  .sentence-bracket {
+    gap: 0.35rem;
+  }
+
+  .article-morph {
+    grid-template-columns: 1fr auto 1fr;
+  }
+
+  .case-lane {
+    min-height: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-rail li,
+  .case-token {
+    transition: none;
+  }
+
+  .article-morph strong {
+    animation: none;
+  }
+}

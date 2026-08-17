@@ -28,6 +28,7 @@ test("canonical lesson exposes the complete learning sequence and passes axe", a
     "Meaning",
     "Usage",
     "Examples",
+    "Interactive grammar lab",
     "Common mistakes",
     "Speaking transfer",
     "Micro practice",
@@ -41,6 +42,36 @@ test("canonical lesson exposes the complete learning sequence and passes axe", a
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();
 
+  expect(accessibility.violations).toEqual([]);
+});
+
+test("grammar interaction engine supports keyboard-first transformations", async ({
+  page,
+}) => {
+  await page.goto(canonicalLesson);
+  await page.getByRole("heading", { name: "Interactive grammar lab" }).scrollIntoViewIfNeeded();
+
+  await page.getByRole("button", { name: "Heute", exact: true }).click();
+  await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
+
+  await page.getByRole("button", { name: "Perfekt", exact: true }).click();
+  await expect(page.getByText(/Ich habe gestern Kaffee getrunken/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Dativ", exact: true }).click();
+  await expect(page.locator(".article-morph strong")).toHaveText("dem");
+
+  const caseToken = page.getByRole("button", {
+    name: /die Frau Subject lane/i,
+    exact: true,
+  });
+  await caseToken.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(page.getByText(/die Frau: Object lane · Akkusativ/)).toBeVisible();
+
+  const accessibility = await new AxeBuilder({ page })
+    .include(".interaction-labs")
+    .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
+    .analyze();
   expect(accessibility.violations).toEqual([]);
 });
 
@@ -66,7 +97,9 @@ test("mobile contents sheet is keyboard reachable and accessible", async ({ page
   await expect(trigger).toBeFocused();
 });
 
-test("reduced motion keeps the lesson and navigation fully usable", async ({ page }) => {
+test("reduced motion keeps lesson, navigation, and grammar labs fully usable", async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(canonicalLesson);
@@ -81,4 +114,9 @@ test("reduced motion keeps the lesson and navigation fully usable", async ({ pag
 
   await page.getByRole("button", { name: /contents/i }).click();
   await expect(page.getByRole("dialog", { name: "Contents" })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await page.getByRole("button", { name: "Heute", exact: true }).click();
+  await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
+  await expect(page.locator(".article-morph strong")).toHaveCSS("animation-name", "none");
 });
