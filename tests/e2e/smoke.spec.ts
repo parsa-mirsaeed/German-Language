@@ -39,7 +39,7 @@ test("every A1 lesson is direct-linkable and satisfies the visible lesson contra
       "Speaking transfer",
       "Micro practice",
     ]) {
-      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+      await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
     }
   }
 });
@@ -56,7 +56,7 @@ test("canonical lesson exposes the complete learning sequence and passes axe", a
     "Speaking transfer",
     "Micro practice",
   ]) {
-    await expect(page.getByRole("heading", { name: heading })).toBeVisible();
+    await expect(page.getByRole("heading", { name: heading, exact: true })).toBeVisible();
   }
   await expect(page.getByText(/مهم‌ترین تغییر/)).toBeVisible();
   const accessibility = await new AxeBuilder({ page })
@@ -67,17 +67,18 @@ test("canonical lesson exposes the complete learning sequence and passes axe", a
 
 test("grammar interaction engine supports keyboard-first transformations", async ({ page }) => {
   await page.goto(canonicalLesson);
-  await page.getByRole("heading", { name: "Interactive grammar lab" }).scrollIntoViewIfNeeded();
-  await page.getByRole("button", { name: "Heute", exact: true }).click();
-  await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
-  await page.getByRole("button", { name: "Perfekt", exact: true }).click();
-  await expect(page.getByText(/Ich habe gestern Kaffee getrunken/)).toBeVisible();
-  await page.getByRole("button", { name: "Dativ", exact: true }).click();
-  await expect(page.locator(".article-morph strong")).toHaveText("dem");
-  const caseToken = page.getByRole("button", { name: /die Frau Subject lane/i, exact: true });
+  await page.getByRole("heading", { name: "Interactive grammar lab", exact: true }).scrollIntoViewIfNeeded();
+  const labs = page.getByTestId("grammar-interaction-labs");
+  await labs.getByRole("button", { name: "Heute", exact: true }).click();
+  await expect(labs.getByText("heute trinke ich den Kaffee.")).toBeVisible();
+  await labs.getByRole("button", { name: "Perfekt", exact: true }).click();
+  await expect(labs.getByText(/Ich habe gestern Kaffee getrunken/)).toBeVisible();
+  await labs.getByRole("button", { name: "Dativ", exact: true }).click();
+  await expect(labs.locator(".article-morph strong")).toHaveText("dem");
+  const caseToken = labs.getByRole("button", { name: /die Frau Subject lane/i, exact: true });
   await caseToken.focus();
   await page.keyboard.press("ArrowRight");
-  await expect(page.getByText(/die Frau: Object lane · Akkusativ/)).toBeVisible();
+  await expect(labs.getByText(/die Frau: Object lane · Akkusativ/)).toBeVisible();
   const accessibility = await new AxeBuilder({ page })
     .include(".interaction-labs")
     .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
@@ -135,7 +136,7 @@ test("exercise modes grade deterministically and progress survives reload", asyn
 
 test("noncanonical lessons do not leak prototype grammar labs", async ({ page }) => {
   await page.goto("/a1/modal-verbs-sentence-bracket");
-  await expect(page.getByRole("heading", { name: "Interactive grammar lab" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Interactive grammar lab", exact: true })).toHaveCount(0);
 });
 
 test("mobile contents sheet is keyboard reachable and accessible", async ({ page }) => {
@@ -165,9 +166,10 @@ test("reduced motion keeps lesson, navigation, grammar labs, and practice usable
   await page.getByRole("button", { name: /contents/i }).click();
   await expect(page.getByRole("dialog", { name: "Contents" })).toBeVisible();
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Heute", exact: true }).click();
-  await expect(page.getByText("heute trinke ich den Kaffee.")).toBeVisible();
-  await expect(page.locator(".article-morph strong")).toHaveCSS("animation-name", "none");
+  const labs = page.getByTestId("grammar-interaction-labs");
+  await labs.getByRole("button", { name: "Heute", exact: true }).click();
+  await expect(labs.getByText("heute trinke ich den Kaffee.")).toBeVisible();
+  await expect(labs.locator(".article-morph strong")).toHaveCSS("animation-name", "none");
   await page.locator(".practice-block").first().getByLabel("den", { exact: true }).check();
   await page.locator(".practice-block").first().getByRole("button", { name: "Check answer" }).click();
   await expect(page.locator(".practice-block").first().getByText("Correct", { exact: true })).toBeVisible();
