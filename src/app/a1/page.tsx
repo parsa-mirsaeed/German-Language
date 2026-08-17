@@ -34,7 +34,6 @@ export default function A1Page() {
         <ol className="unit-map">
           {a1UnitMap.map((unit) => {
             const lesson = a1Lessons.find((candidate) => candidate.unit === unit.unit);
-            const isCanonical = lesson?.slug === "accusative-articles";
 
             return (
               <li className={lesson ? "unit-row is-available" : "unit-row"} key={unit.unit}>
@@ -48,7 +47,7 @@ export default function A1Page() {
                 </div>
                 {lesson ? (
                   <Link className="unit-action" href={`/a1/${lesson.slug}`}>
-                    <span>{isCanonical ? "Open canonical lesson" : "Open sample"}</span>
+                    <span>Open lesson</span>
                     <strong aria-hidden="true">↗</strong>
                   </Link>
                 ) : (

@@ -38,7 +38,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
   return (
-    <BookShell currentUnit={lesson.unit}>
+    <BookShell currentLessonSlug={lesson.slug}>
       <LessonRenderer lesson={lesson} />
     </BookShell>
   );
