@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import type { SpeakingPrompt as SpeakingPromptData } from "@/content/schema/content-types";
 import {
-  emptyProgress,
-  readProgress,
+  getProgressSnapshot,
+  getServerProgressSnapshot,
   recordSpeakingPractice,
+  subscribeProgress,
   writeProgress,
-  type ProgressState,
 } from "@/lib/progress";
 
 type SpeakingPromptProps = {
@@ -18,11 +18,11 @@ type SpeakingPromptProps = {
 export function SpeakingPrompt({ prompts, lessonId }: SpeakingPromptProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [showSupport, setShowSupport] = useState(false);
-  const [progress, setProgress] = useState<ProgressState>(() => emptyProgress());
-
-  useEffect(() => {
-    setProgress(readProgress());
-  }, []);
+  const progress = useSyncExternalStore(
+    subscribeProgress,
+    getProgressSnapshot,
+    getServerProgressSnapshot,
+  );
 
   const active = prompts[activeIndex];
   const practiced = Boolean(
@@ -30,9 +30,7 @@ export function SpeakingPrompt({ prompts, lessonId }: SpeakingPromptProps) {
   );
 
   function markPracticed() {
-    const next = recordSpeakingPractice(progress, lessonId, activeIndex);
-    setProgress(next);
-    writeProgress(next);
+    writeProgress(recordSpeakingPractice(progress, lessonId, activeIndex));
   }
 
   function move(delta: number) {
