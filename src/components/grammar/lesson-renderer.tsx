@@ -4,6 +4,7 @@ import { a1UnitMap } from "@/content/a1/unit-map";
 import { ContrastBlock } from "./contrast-block";
 import { ExampleStream } from "./example-stream";
 import { GrammarFormula } from "./grammar-formula";
+import { GrammarInteractionLab } from "./grammar-interaction-lab";
 import { GrammarTable } from "./grammar-table";
 import { LessonSection } from "./lesson-section";
 import { MistakeCorrection } from "./mistake-correction";
@@ -42,6 +43,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <div
                 aria-label={`${heroRow[1]} changes to ${heroRow[2]} for the masculine accusative pattern`}
                 className="snapshot-morph"
+                role="img"
               >
                 <span>
                   <small>Nominativ</small>
@@ -139,6 +141,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <a href="#meaning">Meaning</a>
               <a href="#usage">Usage</a>
               <a href="#examples">Examples</a>
+              <a href="#interaction-lab">Interactive lab</a>
               <a href="#mistakes">Mistakes</a>
               <a href="#speaking">Speaking</a>
               <a href="#practice">Practice</a>
@@ -146,11 +149,20 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
           </aside>
 
           <div className="lesson-main-column">
-            <LessonSection label="08" title="Common mistakes" id="mistakes">
+            <LessonSection label="08" title="Interactive grammar lab" id="interaction-lab">
+              <p className="section-lede">
+                Manipulate the structure, then say the resulting German sentence aloud.
+                Every interaction has a keyboard-first alternative and remains usable with
+                reduced motion.
+              </p>
+              <GrammarInteractionLab />
+            </LessonSection>
+
+            <LessonSection label="09" title="Common mistakes" id="mistakes">
               <MistakeCorrection mistakes={lesson.commonMistakes} />
             </LessonSection>
 
-            <LessonSection label="09" title="Speaking transfer" id="speaking">
+            <LessonSection label="10" title="Speaking transfer" id="speaking">
               <p className="section-lede">
                 Say these aloud. The goal is to make the grammar available while
                 you are speaking, not only while you are recognizing it.
@@ -158,7 +170,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <SpeakingPrompt prompts={lesson.speakingPrompts} />
             </LessonSection>
 
-            <LessonSection label="10" title="Micro practice" id="practice">
+            <LessonSection label="11" title="Micro practice" id="practice">
               <PracticeBlock exercises={lesson.exercises} />
             </LessonSection>
           </div>
