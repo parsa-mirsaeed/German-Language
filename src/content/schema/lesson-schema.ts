@@ -62,14 +62,46 @@ const speakingPromptSchema = z.object({
   support: nonEmptyString.optional(),
 });
 
-const exerciseSchema = z.object({
+const exerciseBase = {
   id: nonEmptyString,
-  type: z.literal("multiple-choice"),
   prompt: nonEmptyString,
+  explanation: nonEmptyString,
+};
+
+const multipleChoiceExerciseSchema = z.object({
+  ...exerciseBase,
+  type: z.literal("multiple-choice"),
   options: z.array(nonEmptyString).min(2),
   answer: nonEmptyString,
-  explanation: nonEmptyString,
 });
+
+const fillBlankExerciseSchema = z.object({
+  ...exerciseBase,
+  type: z.literal("fill-blank"),
+  answers: z.array(nonEmptyString).min(1),
+  placeholder: nonEmptyString.optional(),
+});
+
+const sentenceBuilderExerciseSchema = z.object({
+  ...exerciseBase,
+  type: z.literal("sentence-builder"),
+  tokens: z.array(nonEmptyString).min(2),
+  answer: z.array(nonEmptyString).min(2),
+});
+
+const errorCorrectionExerciseSchema = z.object({
+  ...exerciseBase,
+  type: z.literal("error-correction"),
+  incorrect: nonEmptyString,
+  answer: nonEmptyString,
+});
+
+const exerciseSchema = z.discriminatedUnion("type", [
+  multipleChoiceExerciseSchema,
+  fillBlankExerciseSchema,
+  sentenceBuilderExerciseSchema,
+  errorCorrectionExerciseSchema,
+]);
 
 const contentReferenceSchema = z.object({
   label: nonEmptyString,
@@ -105,11 +137,25 @@ export const lessonSchema = z
   })
   .superRefine((lesson, ctx) => {
     for (const exercise of lesson.exercises) {
-      if (!exercise.options.includes(exercise.answer)) {
+      if (
+        exercise.type === "multiple-choice" &&
+        !exercise.options.includes(exercise.answer)
+      ) {
         ctx.addIssue({
           code: "custom",
           path: ["exercises", exercise.id, "answer"],
           message: "Multiple-choice answer must appear in options.",
+        });
+      }
+
+      if (
+        exercise.type === "sentence-builder" &&
+        exercise.answer.some((token) => !exercise.tokens.includes(token))
+      ) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["exercises", exercise.id, "answer"],
+          message: "Sentence-builder answer tokens must come from the token bank.",
         });
       }
     }
