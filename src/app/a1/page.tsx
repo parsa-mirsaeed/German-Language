@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SearchCommand } from "@/components/navigation/search-command";
 import { a1Lessons } from "@/content/a1";
 import { a1UnitMap } from "@/content/a1/unit-map";
+import { a1SearchIndex } from "@/lib/search";
 
 export default function A1Page() {
   return (
@@ -14,7 +15,7 @@ export default function A1Page() {
           German A1 Grammar
         </Link>
         <div className="map-search">
-          <SearchCommand />
+          <SearchCommand index={a1SearchIndex} />
         </div>
       </header>
 
