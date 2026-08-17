@@ -1,9 +1,11 @@
 /** @vitest-environment jsdom */
 
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { GrammarInteractionLab } from "@/components/grammar/grammar-interaction-lab";
+
+afterEach(() => cleanup());
 
 describe("GrammarInteractionLab", () => {
   it("moves a first-position chunk while keeping the verb second", async () => {
