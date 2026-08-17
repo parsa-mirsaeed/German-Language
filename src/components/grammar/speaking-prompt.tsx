@@ -7,7 +7,7 @@ import {
   getServerProgressSnapshot,
   recordSpeakingPractice,
   subscribeProgress,
-  writeProgress,
+  updateProgress,
 } from "@/lib/progress";
 
 type SpeakingPromptProps = {
@@ -30,7 +30,9 @@ export function SpeakingPrompt({ prompts, lessonId }: SpeakingPromptProps) {
   );
 
   function markPracticed() {
-    writeProgress(recordSpeakingPractice(progress, lessonId, activeIndex));
+    updateProgress((current) =>
+      recordSpeakingPractice(current, lessonId, activeIndex),
+    );
   }
 
   function move(delta: number) {
