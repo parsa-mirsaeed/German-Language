@@ -7,10 +7,14 @@ const slugs = new Set<string>();
 const introduced = new Set<string>();
 const completedLessonIds = new Set<string>();
 
-for (const unit of [1, 2, 3, 4, 5, 6]) {
+for (let unit = 1; unit <= 12; unit += 1) {
   if (!a1Lessons.some((lesson) => lesson.unit === unit)) {
-    errors.push(`Unit ${unit}: missing required PR04 lesson coverage`);
+    errors.push(`Unit ${unit}: missing required A1 lesson coverage`);
   }
+}
+
+if (a1Lessons.find((lesson) => lesson.unit === 12)?.level !== "A1-bridge") {
+  errors.push("Unit 12: Perfekt integration must stay explicitly labeled A1-bridge");
 }
 
 for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
@@ -43,16 +47,14 @@ for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
     exampleSet.add(normalized);
   }
 
-  if (lesson.unit <= 6) {
-    if (lesson.examples.length < 5) {
-      errors.push(`${lesson.id}: Unit 1–6 lessons need at least 5 examples`);
-    }
-    if (lesson.commonMistakes.length < 2) {
-      errors.push(`${lesson.id}: Unit 1–6 lessons need at least 2 common mistakes`);
-    }
-    if (lesson.speakingPrompts.length < 2) {
-      errors.push(`${lesson.id}: Unit 1–6 lessons need at least 2 speaking prompts`);
-    }
+  if (lesson.examples.length < 5) {
+    errors.push(`${lesson.id}: complete A1 lessons need at least 5 examples`);
+  }
+  if (lesson.commonMistakes.length < 2) {
+    errors.push(`${lesson.id}: complete A1 lessons need at least 2 common mistakes`);
+  }
+  if (lesson.speakingPrompts.length < 2) {
+    errors.push(`${lesson.id}: complete A1 lessons need at least 2 speaking prompts`);
   }
 
   for (const requirement of lesson.requires) {
@@ -78,5 +80,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Content validation passed for ${a1Lessons.length} lessons with prerequisite and coverage checks.`,
+  `Content validation passed for ${a1Lessons.length} lessons across Units 1–12 with prerequisite and coverage checks.`,
 );
