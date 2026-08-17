@@ -133,11 +133,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
             ) : null}
           </div>
 
-          <aside
-            aria-label="Teacher notes"
-            className="lesson-margin"
-            style={{ order: 0 }}
-          >
+          <aside aria-label="Teacher notes" className="lesson-margin" style={{ order: 0 }}>
             {lesson.teacherNotes ? <TeacherInk notes={lesson.teacherNotes} /> : null}
             <div className="margin-map">
               <p>On this page</p>
@@ -145,9 +141,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <a href="#meaning">Meaning</a>
               <a href="#usage">Usage</a>
               <a href="#examples">Examples</a>
-              {showInteractionLab ? (
-                <a href="#interaction-lab">Interactive lab</a>
-              ) : null}
+              {showInteractionLab ? <a href="#interaction-lab">Interactive lab</a> : null}
               <a href="#mistakes">Mistakes</a>
               <a href="#speaking">Speaking</a>
               <a href="#practice">Practice</a>
@@ -156,11 +150,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
 
           <div className="lesson-main-column">
             {showInteractionLab ? (
-              <LessonSection
-                label="08"
-                title="Interactive grammar lab"
-                id="interaction-lab"
-              >
+              <LessonSection label="08" title="Interactive grammar lab" id="interaction-lab">
                 <p className="section-lede">
                   Manipulate the structure, then say the resulting German sentence aloud.
                   Every interaction has a keyboard-first alternative and remains usable with
@@ -176,14 +166,14 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
 
             <LessonSection label={speakingLabel} title="Speaking transfer" id="speaking">
               <p className="section-lede">
-                Say these aloud. The goal is to make the grammar available while
-                you are speaking, not only while you are recognizing it.
+                Say these aloud. Speaking mode is self-rehearsal: support is optional and no
+                microphone or transcription score is used.
               </p>
-              <SpeakingPrompt prompts={lesson.speakingPrompts} />
+              <SpeakingPrompt lessonId={lesson.id} prompts={lesson.speakingPrompts} />
             </LessonSection>
 
             <LessonSection label={practiceLabel} title="Micro practice" id="practice">
-              <PracticeBlock exercises={lesson.exercises} />
+              <PracticeBlock exercises={lesson.exercises} lessonId={lesson.id} />
             </LessonSection>
           </div>
         </div>

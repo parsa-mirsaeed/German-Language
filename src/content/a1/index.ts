@@ -2,7 +2,7 @@ import { unit01SampleLesson } from "./unit-01-sample";
 import { presentTenseLesson } from "./unit-02-present-tense";
 import { nounsArticlesLesson } from "./unit-03-nouns-articles";
 import { negationLesson } from "./unit-04-negation";
-import { accusativeCanonicalLesson } from "./unit-05-accusative-canonical";
+import { accusativeExerciseLesson } from "./unit-05-exercise-rich";
 import { possessionPronounsLesson } from "./unit-06-possession-pronouns";
 import { modalVerbsLesson } from "./unit-07-modal-verbs";
 import { separableVerbsLesson } from "./unit-08-separable-verbs";
@@ -16,7 +16,7 @@ export const a1Lessons = [
   presentTenseLesson,
   nounsArticlesLesson,
   negationLesson,
-  accusativeCanonicalLesson,
+  accusativeExerciseLesson,
   possessionPronounsLesson,
   modalVerbsLesson,
   separableVerbsLesson,
