@@ -2,86 +2,86 @@ import { dativeLesson } from "@/content/a1/unit-09-dative";
 import { buildPersianLessonLocalization } from "./build-persian-localization";
 
 export const unit09Persian = buildPersianLessonLocalization(dativeLesson, {
-  title: "داتیو: dem، der و den",
+  title: "داتیو و حرف‌های اضافهٔ داتیو",
   purpose:
-    "دومین حالت دستوری مهم در A1 را تشخیص بده: آرتیکل‌های Dativ را برای گیرنده‌ها، بعضی فعل‌های پرکاربرد و حرف‌های اضافه‌ای که همیشه Dativ می‌گیرند به‌درستی انتخاب کن.",
+    "حالت Dativ را در الگوهای رایج A1 تشخیص بده و آرتیکل‌های اصلی داتیو را بعد از حرف‌های اضافهٔ پرکاربردی مثل mit، bei، von، zu و aus درست به‌کار ببر.",
   formula: [
     {
-      label: "آرتیکل معین در Dativ",
-      note: "در مذکر و خنثی dem، در مؤنث der و در جمع den می‌بینی؛ جمع معمولاً خود اسم هم ‎-n می‌گیرد اگر از قبل با n/s تمام نشده باشد.",
+      label: "آرتیکل‌های معین",
+      note: "شکل آرتیکل‌های Dativ با الگوهای Nominativ و Akkusativ که قبلاً دیده‌ای فرق دارد.",
     },
     {
-      label: "آرتیکل نامعین در Dativ",
-      note: "ein/eine در Dativ به einem/einer تبدیل می‌شود؛ شکل دقیق به جنس اسم بستگی دارد.",
+      label: "حرف‌های اضافهٔ ثابت و پرکاربرد",
+      note: "در A1 این حرف‌های اضافه را نشانه‌های قوی Dativ در نظر بگیر: mit / bei / von / zu / aus.",
     },
   ],
   meaning: [
-    "Dativ در بسیاری از جمله‌ها گیرنده یا شخصی را نشان می‌دهد که چیزی به او داده، گفته یا ارائه می‌شود؛ اما این فقط یکی از کاربردهای آن است.",
-    "بعضی حرف‌های اضافه مثل mit، bei، nach، aus، zu و von همیشه Dativ می‌خواهند.",
-    "فارسی حالت دستوریِ مستقلی دقیقاً معادل Dativ ندارد؛ پس آن را از روی نقش عبارت و الگوهای ثابت آلمانی یاد بگیر، نه با جست‌وجوی یک پسوند یا واژهٔ فارسی ثابت.",
+    "Dativ یکی دیگر از حالت‌های دستوری آلمانی است. در سطح A1، این حالت به‌ویژه بعد از مجموعه‌ای از حرف‌های اضافهٔ پرکاربرد دیده می‌شود.",
+    "شکل آرتیکل برای نشان‌دادن حالت تغییر می‌کند: mit dem Bus، bei der Arbeit، aus dem Haus.",
+    "در جمعِ Dativ معمولاً از den استفاده می‌شود و اگر شکل جمع از قبل به ‎-n یا ‎-s ختم نشود، اغلب خود اسم هم ‎-n می‌گیرد.",
   ],
   usage: [
     {
-      title: "گیرنده را نشان بده",
-      body: "در «Ich gebe dem Mann das Buch.» عبارت dem Mann گیرنده است و به Dativ می‌رود؛ das Buch چیزی است که داده می‌شود.",
+      title: "رفت‌وآمد و همراهی با mit",
+      body: "Ich fahre mit dem Bus. Ich lerne mit meiner Freundin. حرف اضافهٔ mit همیشه Dativ می‌خواهد.",
     },
     {
-      title: "با حرف‌های اضافهٔ داتیو کار کن",
-      body: "mit dem Bus، bei der Arbeit و zu einem Arzt نمونه‌های روزمره‌ای هستند که حرف اضافه مستقیماً Dativ را تعیین می‌کند.",
+      title: "مکان یا بافت با bei",
+      body: "Er ist bei der Arbeit. Wir wohnen bei unseren Eltern. بعد از bei عبارت اسمی در Dativ می‌آید.",
     },
     {
-      title: "عبارت‌های پرکاربرد را یک‌جا یاد بگیر",
-      body: "بعضی فعل‌ها و ترکیب‌ها در آلمانی الگوی داتیو دارند. در A1 بهتر است نمونه‌های پرتکرار را به‌صورت عبارت کامل تمرین کنی.",
+      title: "مبدأ و حرکت با aus / von / zu",
+      body: "Sie kommt aus dem Büro. Ich gehe zu der Ärztin. این حرف‌های اضافه هم Dativ می‌گیرند.",
     },
   ],
   recognitionCues: [
     {
-      label: "mit · bei · nach · aus · zu · von",
-      note: "این حرف‌های اضافه در الگوی پایه همیشه Dativ می‌گیرند.",
+      label: "mit · bei · von · zu · aus",
+      note: "وقتی یکی از این حرف‌های اضافه را دیدی، عبارت اسمی بعد از آن را برای شکل Dativ بررسی کن.",
     },
     {
-      label: "Wem? · dem / der / einem / einer",
-      note: "Wem? یعنی «به چه کسی / برای چه کسی؟» می‌تواند برای پیدا کردن گیرنده کمک کند؛ شکل‌هایی مثل dem، der، einem و einer هم از نشانه‌های دیداری مهم Dativ هستند. این‌ها ابزار تشخیص‌اند، نه ترجمهٔ یک‌به‌یک فارسی.",
+      label: "dem / der / den",
+      note: "این شکل‌های آرتیکل از سرنخ‌های واضح و مقدماتیِ یک عبارت Dativ هستند. فارسی معادلِ حالت دستوریِ یک‌به‌یک برای Dativ ندارد؛ این شکل‌های آلمانی را به‌عنوان نشانه‌های خودِ زبان یاد بگیر.",
     },
   ],
   paradigms: [
     {
-      title: "آرتیکل‌ها در Dativ",
-      columns: ["جنس / تعداد", "معین", "نامعین", "مثال"],
+      title: "آرتیکل‌های معین در Dativ",
+      columns: ["جنس / تعداد", "Nominativ", "Dativ", "مثال"],
       rowLabels: ["مذکر", "مؤنث", "خنثی", "جمع"],
     },
   ],
   examples: [
-    { translation: "من با اتوبوس می‌آیم." },
-    { translation: "او پیشِ خواهرش است." },
-    { translation: "ما بعد از کلاس به خانه می‌رویم." },
-    { translation: "من آن کتاب را به مرد می‌دهم." },
-    { translation: "آیا با یک دوست صحبت می‌کنی؟" },
+    { translation: "من با اتوبوس رفت‌وآمد می‌کنم / می‌روم." },
+    { translation: "او با معلم زن صحبت می‌کند." },
+    { translation: "ما از دفتر می‌آییم." },
+    { translation: "پیشِ پدر و مادرت هستی؟" },
+    { translation: "او با ماشین رفت‌وآمد نمی‌کند." },
     {
-      translation: "شکل Akkusativ/پایه نادرست است → شکل Dativ درست بعد از mit.",
-      note: "mit همیشه Dativ می‌گیرد؛ برای اسم مذکر der Mann، شکل درست mit dem Mann است.",
+      translation: "آرتیکل داتیو اشتباه است → آرتیکل درستِ داتیو برای اسم مذکر.",
+      note: "بعد از mit و برای Bus مذکرِ مفرد، شکل درست mit dem Bus است.",
     },
   ],
   contrasts: [
     {
       explanation:
-        "در جملهٔ اول den Mann مفعول مستقیم در Akkusativ است. در جملهٔ دوم dem Mann گیرنده و Dativ است. نقش جمله تعیین می‌کند کدام حالت لازم است.",
+        "در «Ich sehe den Bus.» عبارت den Bus مفعول مستقیمِ مذکر در Akkusativ است. در «Ich fahre mit dem Bus.» حرف اضافهٔ mit باعث می‌شود همان اسم به شکل Dativ یعنی dem Bus بیاید.",
     },
   ],
   teacherNotes: [
     {
-      title: "یادداشت معلم — Dativ را به یک ترجمهٔ فارسی تقلیل نده",
-      body: "از فارسی برای فهم موقعیت استفاده کن، اما دنبال یک نشانگر ثابتِ معادل Dativ نباش. حرف اضافه، فعل و نقش گیرنده را به‌عنوان سرنخ‌های آلمانی تمرین کن.",
+      title: "یادداشت معلم — اول بگذار حرف اضافه حالت را انتخاب کند",
+      body: "برای حرف‌های اضافهٔ ثابتِ داتیو لازم نیست هر بار کل جمله را از نو تحلیل کنی. mit/bei/von/zu/aus را که دیدی، عبارت اسمی بعدی را مستقیماً به Dativ ببر. در فارسی دنبال یک نشانگر ثابتِ معادل Dativ نباش؛ الگوی آلمانی را حفظ کن.",
     },
   ],
   commonMistakes: [
     {
       explanation:
-        "mit یک حرف اضافهٔ همیشه‌داتیو است؛ برای اسم مذکر Bus، der باید به dem تبدیل شود: mit dem Bus.",
+        "Bus مذکرِ مفرد است؛ آرتیکل معینِ مذکر در Dativ برابر dem است: mit dem Bus.",
     },
     {
       explanation:
-        "در این جمله، dem Mann گیرندهٔ عمل geben است؛ شکل Akkusativ یعنی den Mann برای این نقش مناسب نیست.",
+        "bei همیشه Dativ می‌گیرد؛ بنابراین die Arbeit به bei der Arbeit تبدیل می‌شود.",
     },
   ],
   speakingPrompts: [
@@ -90,20 +90,20 @@ export const unit09Persian = buildPersianLessonLocalization(dativeLesson, {
       support: "Ich fahre mit dem/der ...",
     },
     {
-      prompt: "یک جمله با bei یا zu بساز.",
-      support: "Ich bin bei ... / Ich gehe zu ...",
+      prompt: "به آلمانی بگو با چه کسی صحبت می‌کنی یا درس می‌خوانی.",
+      support: "Ich spreche/lerne mit ...",
     },
     {
-      prompt: "به آلمانی بگو چیزی را به چه کسی می‌دهی.",
-      support: "Ich gebe dem/der ... ...",
+      prompt: "به آلمانی بگو از کجا می‌آیی.",
+      support: "Ich komme aus ...",
     },
   ],
   exercises: [
     {
       id: "u09-dat-01",
-      prompt: "عبارت درست را انتخاب کن: Ich fahre ___ Bus.",
+      prompt: "آرتیکل درست را انتخاب کن: Ich fahre mit ___ Bus.",
       explanation:
-        "mit همیشه Dativ می‌گیرد؛ Bus مذکر است، بنابراین شکل درست mit dem Bus است.",
+        "mit همیشه Dativ می‌گیرد و Bus مذکرِ مفرد است؛ بنابراین عبارت درست mit dem Bus است.",
     },
   ],
 });
