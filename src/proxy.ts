@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
-  defaultLocale,
   isLocale,
   localeCookieName,
+  preferredLocaleFromAcceptLanguage,
   type Locale,
 } from "@/i18n/config";
 
@@ -15,12 +15,9 @@ function preferredLocale(request: NextRequest): Locale {
     return saved;
   }
 
-  const accepted = request.headers.get("accept-language")?.toLowerCase() ?? "";
-  return accepted
-    .split(",")
-    .some((entry) => entry.trim().startsWith("fa"))
-    ? "fa"
-    : defaultLocale;
+  return preferredLocaleFromAcceptLanguage(
+    request.headers.get("accept-language"),
+  );
 }
 
 function rememberLocale(response: NextResponse, locale: Locale) {
