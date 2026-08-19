@@ -56,9 +56,18 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     notFound();
   }
 
+  const content =
+    lang === "fa" ? (
+      <div data-localization-state="pending" dir="ltr" lang="en">
+        {children}
+      </div>
+    ) : (
+      children
+    );
+
   return (
     <html dir={localeDirection(lang)} lang={lang}>
-      <body data-motion-policy="reduced-ready">{children}</body>
+      <body data-motion-policy="reduced-ready">{content}</body>
     </html>
   );
 }
