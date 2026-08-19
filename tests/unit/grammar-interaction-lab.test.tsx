@@ -34,6 +34,8 @@ describe("GrammarInteractionLab", () => {
     token.focus();
     await user.keyboard("{ArrowRight}");
 
-    expect(screen.getByText(/die Frau: Object lane · Akkusativ/)).toBeTruthy();
+    expect(
+      screen.getByRole("button", { name: /die Frau Object lane · Akkusativ/i }),
+    ).toBeTruthy();
   });
 });
