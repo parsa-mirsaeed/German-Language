@@ -147,9 +147,15 @@ function SentenceBuilder({ exercise, answer, onChange, locale }: SentenceBuilder
 
   return (
     <div className="sentence-builder-exercise">
-      <div className="sentence-builder-output" aria-live="polite" dir="ltr" lang="de">{answer.length > 0 ? answer.join(" ") : ui.practice.buildHere}</div>
+      <div className="sentence-builder-output" aria-live="polite">
+        {answer.length > 0 ? (
+          <span dir="ltr" lang="de">{answer.join(" ")}</span>
+        ) : (
+          <span dir={locale === "fa" ? "rtl" : "ltr"} lang={locale}>{ui.practice.buildHere}</span>
+        )}
+      </div>
       <div aria-label={ui.practice.availableTokens} className="sentence-builder-bank" role="group">
-        {available.map(({ token, index }) => <button key={`${token}-${index}`} onClick={() => onChange([...answer, token])} type="button">{token}</button>)}
+        {available.map(({ token, index }) => <button key={`${token}-${index}`} onClick={() => onChange([...answer, token])} type="button" dir="ltr" lang="de">{token}</button>)}
       </div>
       <div className="sentence-builder-actions">
         <button disabled={answer.length === 0} onClick={() => onChange(answer.slice(0, -1))} type="button">{ui.practice.removeLast}</button>
