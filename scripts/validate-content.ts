@@ -1,6 +1,11 @@
 import { a1Lessons } from "../src/content/a1";
 import { a1UnitMap } from "../src/content/a1/unit-map";
+import { persianA1Localizations } from "../src/content/locales/fa/a1";
 import { lessonSchema } from "../src/content/schema/lesson-schema";
+import {
+  buildEnglishLessonLocalization,
+  validateLessonLocalization,
+} from "../src/i18n/content-localization";
 import { a1SearchIndex } from "../src/lib/search";
 
 const errors: string[] = [];
@@ -90,9 +95,30 @@ for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
     }
   }
 
+  const englishLocalization = buildEnglishLessonLocalization(lesson);
+  for (const localizationError of validateLessonLocalization(lesson, englishLocalization)) {
+    errors.push(`${lesson.id}/en: ${localizationError}`);
+  }
+
+  const persianLocalization = persianA1Localizations[lesson.id];
+  if (persianLocalization) {
+    if (persianLocalization.locale !== "fa") {
+      errors.push(`${lesson.id}/fa: locale must be fa`);
+    }
+    for (const localizationError of validateLessonLocalization(lesson, persianLocalization)) {
+      errors.push(`${lesson.id}/fa: ${localizationError}`);
+    }
+  }
+
   completedLessonIds.add(lesson.id);
   for (const concept of lesson.introduces) {
     introduced.add(concept);
+  }
+}
+
+for (const lessonId of Object.keys(persianA1Localizations)) {
+  if (!ids.has(lessonId)) {
+    errors.push(`${lessonId}/fa: localization points to an unknown lesson`);
   }
 }
 
@@ -114,5 +140,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Content validation passed for ${a1Lessons.length} lessons, ${exerciseIds.size} exercises, and a matching ${a1SearchIndex.length}-document search index.`,
+  `Content validation passed for ${a1Lessons.length} lessons, ${exerciseIds.size} exercises, ${Object.keys(persianA1Localizations).length} Persian lesson overlays, and a matching ${a1SearchIndex.length}-document search index.`,
 );
