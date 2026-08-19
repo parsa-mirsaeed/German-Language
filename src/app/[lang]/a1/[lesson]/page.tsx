@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { LessonRenderer } from "@/components/grammar/lesson-renderer";
 import { BookShell } from "@/components/navigation/book-shell";
 import { a1Lessons } from "@/content/a1";
-import { isLocale, locales } from "@/i18n/config";
+import { isLocale } from "@/i18n/config";
 import { getLessonBySlug } from "@/lib/content/lesson-utils";
 
 type LessonPageProps = {
@@ -11,9 +11,7 @@ type LessonPageProps = {
 };
 
 export function generateStaticParams() {
-  return locales.flatMap((lang) =>
-    a1Lessons.map((lesson) => ({ lang, lesson: lesson.slug })),
-  );
+  return a1Lessons.map((lesson) => ({ lesson: lesson.slug }));
 }
 
 export async function generateMetadata({
