@@ -1,8 +1,14 @@
 import Link from "next/link";
 import type { GrammarLesson } from "@/content/schema/content-types";
-import { a1UnitMap } from "@/content/a1/unit-map";
+import { persianA1Localizations } from "@/content/locales/fa/a1";
+import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
+import {
+  resolveLessonLocalization,
+} from "@/i18n/content-localization";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/i18n/config";
+import { applyLessonLocalization } from "@/i18n/localized-lesson-view";
+import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { ContrastBlock } from "./contrast-block";
 import { ExampleStream } from "./example-stream";
 import { GrammarFormula } from "./grammar-formula";
@@ -21,12 +27,24 @@ type LessonRendererProps = {
 };
 
 export function LessonRenderer({ lesson, locale }: LessonRendererProps) {
-  const unit = a1UnitMap.find((candidate) => candidate.unit === lesson.unit);
-  const heroRow = lesson.paradigms?.[0]?.rows?.[0];
+  const ui = getUiDictionary(locale);
+  const resolved = resolveLessonLocalization(
+    lesson,
+    locale,
+    persianA1Localizations[lesson.id],
+  );
+  const viewLesson = applyLessonLocalization(lesson, resolved.copy);
+  const contentLocale = resolved.contentLocale;
+  const contentDir = contentLocale === "fa" ? "rtl" : "ltr";
+  const unit = getLocalizedA1UnitMap(locale).find(
+    (candidate) => candidate.unit === lesson.unit,
+  );
+  const heroRow = viewLesson.paradigms?.[0]?.rows?.[0];
   const showInteractionLab = lesson.slug === "accusative-articles";
   const mistakesLabel = showInteractionLab ? "09" : "08";
   const speakingLabel = showInteractionLab ? "10" : "09";
   const practiceLabel = showInteractionLab ? "11" : "10";
+  const copyProps = { dir: contentDir, lang: contentLocale } as const;
 
   return (
     <main className="lesson-canvas">
@@ -34,175 +52,128 @@ export function LessonRenderer({ lesson, locale }: LessonRendererProps) {
         <header className="lesson-hero">
           <div className="lesson-hero-copy">
             <Link className="lesson-breadcrumb" href={withLocale(locale, "/a1")}>
-              A1 map <span aria-hidden="true">/</span> Unit {lesson.unit}
+              A1 <span aria-hidden="true">/</span> {ui.lesson.unit} {lesson.unit}
             </Link>
             <p className="lesson-kicker">
-              {lesson.level} · {unit?.title ?? `Unit ${lesson.unit}`}
+              <span dir="ltr">{lesson.level}</span> · {unit?.title ?? `${ui.lesson.unit} ${lesson.unit}`}
             </p>
             <h1 dir="ltr" lang="de">{lesson.title.de}</h1>
-            <p className="lesson-english-title">{lesson.title.en}</p>
-            <p className="lesson-purpose">{lesson.purpose}</p>
+            <p className="lesson-english-title" {...copyProps}>{viewLesson.title.en}</p>
+            <p className="lesson-purpose" {...copyProps}>{viewLesson.purpose}</p>
+            {resolved.isFallback ? (
+              <p className="localization-pending" lang={locale} dir={locale === "fa" ? "rtl" : "ltr"}>
+                {ui.lesson.pendingTranslation}
+              </p>
+            ) : null}
           </div>
 
           <div className="lesson-hero-snapshot">
-            <p>Grammar snapshot</p>
+            <p>{ui.lesson.grammarSnapshot}</p>
             {heroRow ? (
-              <div
-                aria-label={`${heroRow[1]} changes to ${heroRow[2]} for the masculine accusative pattern`}
-                className="snapshot-morph"
-                dir="ltr"
-                role="img"
-              >
-                <span>
-                  <small>Nominativ</small>
-                  <strong lang="de">{heroRow[1]}</strong>
-                </span>
-                <span className="snapshot-arrow" aria-hidden="true">
-                  →
-                </span>
-                <span>
-                  <small>Akkusativ</small>
-                  <strong lang="de">{heroRow[2]}</strong>
-                </span>
+              <div className="snapshot-morph" dir="ltr" role="img">
+                <span><small>Nominativ</small><strong lang="de">{heroRow[1]}</strong></span>
+                <span className="snapshot-arrow" aria-hidden="true">→</span>
+                <span><small>Akkusativ</small><strong lang="de">{heroRow[2]}</strong></span>
               </div>
             ) : (
               <code dir="ltr" lang="de">{lesson.formula?.[0]?.pattern}</code>
             )}
             <div className="snapshot-legend">
-              <span>
-                <i className="legend-dot nominative" /> subject
-              </span>
-              <span>
-                <i className="legend-dot accusative" /> direct object
-              </span>
+              <span><i className="legend-dot nominative" /> {ui.lesson.subject}</span>
+              <span><i className="legend-dot accusative" /> {ui.lesson.directObject}</span>
             </div>
           </div>
         </header>
 
         <div className="lesson-layout">
           <div className="lesson-main-column">
-            {lesson.formula ? (
-              <LessonSection label="01" title="Formula / structure" id="formula">
-                <GrammarFormula blocks={lesson.formula} />
+            {viewLesson.formula ? (
+              <LessonSection label="01" title={ui.lesson.sections.formula} id="formula">
+                <div {...copyProps}><GrammarFormula blocks={viewLesson.formula} /></div>
               </LessonSection>
             ) : null}
 
-            <LessonSection label="02" title="Meaning" id="meaning">
-              <div className="meaning-stack">
-                {lesson.meaning.map((item, index) => (
-                  <div key={item}>
-                    <span aria-hidden="true">{index + 1}</span>
-                    <p>{item}</p>
-                  </div>
-                ))}
+            <LessonSection label="02" title={ui.lesson.sections.meaning} id="meaning">
+              <div className="meaning-stack" {...copyProps}>
+                {viewLesson.meaning.map((item, index) => <div key={item}><span aria-hidden="true">{index + 1}</span><p>{item}</p></div>)}
               </div>
             </LessonSection>
 
-            <LessonSection label="03" title="Usage" id="usage">
-              <div className="usage-list">
-                {lesson.usage.map((item) => (
-                  <div key={item.title}>
-                    <h3>{item.title}</h3>
-                    <p>{item.body}</p>
-                  </div>
-                ))}
+            <LessonSection label="03" title={ui.lesson.sections.usage} id="usage">
+              <div className="usage-list" {...copyProps}>
+                {viewLesson.usage.map((item) => <div key={item.title}><h3>{item.title}</h3><p>{item.body}</p></div>)}
               </div>
             </LessonSection>
 
-            {lesson.recognitionCues ? (
-              <LessonSection label="04" title="Recognition cues" id="recognition">
-                <RecognitionCues cues={lesson.recognitionCues} />
+            {viewLesson.recognitionCues ? (
+              <LessonSection label="04" title={ui.lesson.sections.recognition} id="recognition">
+                <div {...copyProps}><RecognitionCues cues={viewLesson.recognitionCues} /></div>
               </LessonSection>
             ) : null}
 
-            {lesson.paradigms?.map((table, index) => (
-              <LessonSection
-                id={index === 0 ? "table" : `table-${index + 1}`}
-                key={table.title}
-                label={String(5 + index).padStart(2, "0")}
-                title="Case / conjugation board"
-              >
-                <GrammarTable table={table} />
+            {viewLesson.paradigms?.map((table, index) => (
+              <LessonSection id={index === 0 ? "table" : `table-${index + 1}`} key={table.title} label={String(5 + index).padStart(2, "0")} title={ui.lesson.sections.table}>
+                <div {...copyProps}><GrammarTable table={table} /></div>
               </LessonSection>
             ))}
 
-            <LessonSection label="06" title="Examples" id="examples">
-              <ExampleStream examples={lesson.examples} />
+            <LessonSection label="06" title={ui.lesson.sections.examples} id="examples">
+              <ExampleStream examples={viewLesson.examples} translationLocale={contentLocale} />
             </LessonSection>
 
-            {lesson.contrasts ? (
-              <LessonSection label="07" title="Contrast" id="contrast">
-                <ContrastBlock contrasts={lesson.contrasts} />
+            {viewLesson.contrasts ? (
+              <LessonSection label="07" title={ui.lesson.sections.contrast} id="contrast">
+                <div {...copyProps}><ContrastBlock contrasts={viewLesson.contrasts} /></div>
               </LessonSection>
             ) : null}
           </div>
 
-          <aside aria-label="Teacher notes" className="lesson-margin" style={{ order: 0 }}>
-            {lesson.teacherNotes ? <TeacherInk notes={lesson.teacherNotes} /> : null}
+          <aside aria-label={ui.lesson.sourceNotes} className="lesson-margin" style={{ order: 0 }}>
+            {viewLesson.teacherNotes ? <TeacherInk notes={viewLesson.teacherNotes} contentLocale={contentLocale} uiLocale={locale} /> : null}
             <div className="margin-map">
-              <p>On this page</p>
-              <a href="#formula">Formula</a>
-              <a href="#meaning">Meaning</a>
-              <a href="#usage">Usage</a>
-              <a href="#examples">Examples</a>
-              {showInteractionLab ? <a href="#interaction-lab">Interactive lab</a> : null}
-              <a href="#mistakes">Mistakes</a>
-              <a href="#speaking">Speaking</a>
-              <a href="#practice">Practice</a>
+              <p>{ui.navigation.onThisPage}</p>
+              <a href="#formula">{ui.lesson.sections.formula}</a>
+              <a href="#meaning">{ui.lesson.sections.meaning}</a>
+              <a href="#usage">{ui.lesson.sections.usage}</a>
+              <a href="#examples">{ui.lesson.sections.examples}</a>
+              {showInteractionLab ? <a href="#interaction-lab">{ui.lesson.sections.interaction}</a> : null}
+              <a href="#mistakes">{ui.lesson.sections.mistakes}</a>
+              <a href="#speaking">{ui.lesson.sections.speaking}</a>
+              <a href="#practice">{ui.lesson.sections.practice}</a>
             </div>
           </aside>
 
           <div className="lesson-main-column">
             {showInteractionLab ? (
-              <LessonSection label="08" title="Interactive grammar lab" id="interaction-lab">
-                <p className="section-lede">
-                  Manipulate the structure, then say the resulting German sentence aloud.
-                  Every interaction has a keyboard-first alternative and remains usable with
-                  reduced motion.
-                </p>
-                <GrammarInteractionLab />
+              <LessonSection label="08" title={ui.lesson.sections.interaction} id="interaction-lab">
+                <p className="section-lede">{ui.lesson.interactionLead}</p>
+                <GrammarInteractionLab locale={locale} />
               </LessonSection>
             ) : null}
 
-            <LessonSection label={mistakesLabel} title="Common mistakes" id="mistakes">
-              <MistakeCorrection mistakes={lesson.commonMistakes} />
+            <LessonSection label={mistakesLabel} title={ui.lesson.sections.mistakes} id="mistakes">
+              <div {...copyProps}><MistakeCorrection mistakes={viewLesson.commonMistakes} /></div>
             </LessonSection>
 
-            <LessonSection label={speakingLabel} title="Speaking transfer" id="speaking">
-              <p className="section-lede">
-                Say these aloud. Speaking mode is self-rehearsal: support is optional and no
-                microphone or transcription score is used.
-              </p>
-              <SpeakingPrompt lessonId={lesson.id} prompts={lesson.speakingPrompts} />
+            <LessonSection label={speakingLabel} title={ui.lesson.sections.speaking} id="speaking">
+              <p className="section-lede">{ui.lesson.speakingLead}</p>
+              <SpeakingPrompt contentLocale={contentLocale} lessonId={lesson.id} locale={locale} prompts={viewLesson.speakingPrompts} />
             </LessonSection>
 
-            <LessonSection label={practiceLabel} title="Micro practice" id="practice">
-              <PracticeBlock exercises={lesson.exercises} lessonId={lesson.id} />
+            <LessonSection label={practiceLabel} title={ui.lesson.sections.practice} id="practice">
+              <PracticeBlock contentLocale={contentLocale} exercises={viewLesson.exercises} lessonId={lesson.id} locale={locale} />
             </LessonSection>
           </div>
         </div>
 
         <footer className="lesson-footer">
           <div>
-            <p className="footer-label">A1 alignment / source notes</p>
-            <ul>
-              {lesson.references.map((reference) => (
-                <li key={reference.label}>
-                  {reference.url ? (
-                    <a href={reference.url} rel="noreferrer" target="_blank">
-                      {reference.label}
-                    </a>
-                  ) : (
-                    <strong>{reference.label}</strong>
-                  )}
-                  {reference.note ? <span> — {reference.note}</span> : null}
-                </li>
-              ))}
+            <p className="footer-label">{ui.lesson.sourceNotes}</p>
+            <ul dir="ltr" lang="en">
+              {lesson.references.map((reference) => <li key={reference.label}>{reference.url ? <a href={reference.url} rel="noreferrer" target="_blank">{reference.label}</a> : <strong>{reference.label}</strong>}{reference.note ? <span> — {reference.note}</span> : null}</li>)}
             </ul>
           </div>
-          <Link className="next-map-link" href={withLocale(locale, "/a1")}>
-            Back to the A1 map <span aria-hidden="true">→</span>
-          </Link>
+          <Link className="next-map-link" href={withLocale(locale, "/a1")}>{ui.navigation.backToMap} <span aria-hidden="true">→</span></Link>
         </footer>
       </article>
     </main>
