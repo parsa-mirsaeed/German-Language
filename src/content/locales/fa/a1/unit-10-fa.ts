@@ -69,11 +69,7 @@ export const unit10Persian = buildPersianLessonLocalization(placeDirectionLesson
   contrasts: [
     {
       explanation:
-        "حرف اضافهٔ auf در هر دو جمله یکی است. در جملهٔ اول کتاب روی میز قرار دارد، پس Dativ می‌آید؛ در جملهٔ دوم کتاب به روی میز منتقل می‌شود، پس Akkusativ می‌آید.",
-    },
-    {
-      explanation:
-        "im Kino موقعیت ثابت را نشان می‌دهد؛ ins Kino مقصد حرکت را. تفاوت اصلی معنایی «در کجا» در برابر «به کجا» است.",
+        "حرف اضافه یکسان است، اما معنی مسیر را تعیین می‌کند: auf dem Tisch و im Kino موقعیت ثابت و Dativ را نشان می‌دهند؛ auf den Tisch و ins Kino مقصد حرکت و Akkusativ را.",
     },
   ],
   teacherNotes: [
