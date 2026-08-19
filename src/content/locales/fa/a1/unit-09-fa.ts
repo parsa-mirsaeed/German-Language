@@ -40,12 +40,8 @@ export const unit09Persian = buildPersianLessonLocalization(dativeLesson, {
       note: "این حرف‌های اضافه در الگوی پایه همیشه Dativ می‌گیرند.",
     },
     {
-      label: "Wem?",
-      note: "برای بعضی جمله‌ها سؤال Wem? یعنی «به چه کسی / برای چه کسی؟» کمک می‌کند گیرندهٔ داتیو را پیدا کنی؛ این فقط ابزار تشخیص است، نه ترجمهٔ یک‌به‌یک فارسی.",
-    },
-    {
-      label: "dem / der / einem / einer",
-      note: "این شکل‌ها از واضح‌ترین نشانه‌های دیداری Dativ در سطح A1 هستند.",
+      label: "Wem? · dem / der / einem / einer",
+      note: "Wem? یعنی «به چه کسی / برای چه کسی؟» می‌تواند برای پیدا کردن گیرنده کمک کند؛ شکل‌هایی مثل dem، der، einem و einer هم از نشانه‌های دیداری مهم Dativ هستند. این‌ها ابزار تشخیص‌اند، نه ترجمهٔ یک‌به‌یک فارسی.",
     },
   ],
   paradigms: [
@@ -104,7 +100,7 @@ export const unit09Persian = buildPersianLessonLocalization(dativeLesson, {
   ],
   exercises: [
     {
-      id: "u09-dative-01",
+      id: "u09-dat-01",
       prompt: "عبارت درست را انتخاب کن: Ich fahre ___ Bus.",
       explanation:
         "mit همیشه Dativ می‌گیرد؛ Bus مذکر است، بنابراین شکل درست mit dem Bus است.",
