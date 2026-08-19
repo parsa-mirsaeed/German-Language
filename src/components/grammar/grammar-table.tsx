@@ -2,12 +2,16 @@ import type { GrammarTable as GrammarTableData } from "@/content/schema/content-
 
 type GrammarTableProps = {
   table: GrammarTableData;
+  scrollHint?: string;
 };
 
-export function GrammarTable({ table }: GrammarTableProps) {
+export function GrammarTable({
+  table,
+  scrollHint = "Scroll horizontally to see all columns when needed.",
+}: GrammarTableProps) {
   return (
     <div
-      aria-label={`${table.title}. Scroll horizontally to see all columns when needed.`}
+      aria-label={`${table.title}. ${scrollHint}`}
       className="grammar-table-wrap"
       role="region"
       tabIndex={0}
@@ -17,9 +21,7 @@ export function GrammarTable({ table }: GrammarTableProps) {
         <thead>
           <tr>
             {table.columns.map((column) => (
-              <th key={column} scope="col">
-                {column}
-              </th>
+              <th key={column} scope="col">{column}</th>
             ))}
           </tr>
         </thead>
@@ -28,13 +30,9 @@ export function GrammarTable({ table }: GrammarTableProps) {
             <tr key={`${table.title}-${rowIndex}`}>
               {row.map((cell, cellIndex) =>
                 cellIndex === 0 ? (
-                  <th key={cellIndex} scope="row">
-                    {cell}
-                  </th>
+                  <th key={cellIndex} scope="row">{cell}</th>
                 ) : (
-                  <td key={cellIndex} lang="de">
-                    {cell}
-                  </td>
+                  <td dir="ltr" key={cellIndex} lang="de">{cell}</td>
                 ),
               )}
             </tr>
