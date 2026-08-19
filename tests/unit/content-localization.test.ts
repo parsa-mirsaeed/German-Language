@@ -6,6 +6,7 @@ import {
   resolveLessonLocalization,
   validateLessonLocalization,
 } from "@/i18n/content-localization";
+import { applyLessonLocalization } from "@/i18n/localized-lesson-view";
 
 describe("lesson localization contract", () => {
   it("derives a complete English localization from canonical content", () => {
@@ -21,18 +22,12 @@ describe("lesson localization contract", () => {
     const keys = lessonLocalizationKeys(accusativeCanonicalLesson);
     expect(keys.formula).toEqual(["formula-1", "formula-2"]);
     expect(keys.meaning).toEqual(["meaning-1", "meaning-2", "meaning-3"]);
-    expect(keys.exercises).toEqual(
-      accusativeCanonicalLesson.exercises.map((exercise) => exercise.id),
-    );
+    expect(keys.exercises).toEqual(accusativeCanonicalLesson.exercises.map((exercise) => exercise.id));
   });
 
   it("rejects incomplete overlays marked complete", () => {
     const copy = buildEnglishLessonLocalization(accusativeCanonicalLesson);
-    const incomplete = {
-      ...copy,
-      locale: "fa" as const,
-      meaning: copy.meaning.slice(0, 1),
-    };
+    const incomplete = { ...copy, locale: "fa" as const, meaning: copy.meaning.slice(0, 1) };
     expect(validateLessonLocalization(accusativeCanonicalLesson, incomplete)).toContain(
       "meaning: missing ids: meaning-2, meaning-3",
     );
@@ -43,5 +38,38 @@ describe("lesson localization contract", () => {
     expect(resolved.requestedLocale).toBe("fa");
     expect(resolved.contentLocale).toBe("en");
     expect(resolved.isFallback).toBe(true);
+  });
+
+  it("applies localized blocks by stable ID even if localization arrays are reordered", () => {
+    const copy = buildEnglishLessonLocalization(accusativeCanonicalLesson);
+    const reordered = {
+      ...copy,
+      locale: "fa" as const,
+      examples: [...copy.examples].reverse().map((example) => ({
+        ...example,
+        translation: `FA:${example.id}`,
+      })),
+    };
+    const view = applyLessonLocalization(accusativeCanonicalLesson, reordered);
+    expect(view.examples[0].en).toBe("FA:example-1");
+    expect(view.examples.at(-1)?.en).toBe(`FA:example-${copy.examples.length}`);
+  });
+
+  it("preserves canonical blocks that are missing from a draft overlay", () => {
+    const copy = buildEnglishLessonLocalization(accusativeCanonicalLesson);
+    const draft = {
+      ...copy,
+      locale: "fa" as const,
+      status: "draft" as const,
+      meaning: [{ id: "meaning-2", text: "ترجمهٔ آزمایشی" }],
+      usage: [],
+    };
+    const view = applyLessonLocalization(accusativeCanonicalLesson, draft);
+    expect(view.meaning).toEqual([
+      accusativeCanonicalLesson.meaning[0],
+      "ترجمهٔ آزمایشی",
+      accusativeCanonicalLesson.meaning[2],
+    ]);
+    expect(view.usage).toEqual(accusativeCanonicalLesson.usage);
   });
 });
