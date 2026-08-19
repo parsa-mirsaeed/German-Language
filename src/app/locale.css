@@ -30,6 +30,12 @@
   color: var(--forest);
 }
 
+.map-search {
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
 [dir="rtl"] .language-switcher {
   font-family: Tahoma, "Segoe UI", sans-serif;
 }
@@ -38,4 +44,36 @@
 [lang="de"] {
   direction: ltr;
   unicode-bidi: isolate;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    flex-wrap: wrap;
+  }
+
+  .book-utility-bar {
+    align-items: flex-start;
+  }
+
+  .book-utility-actions {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .book-utility-actions .language-switcher {
+    min-height: 2.2rem;
+    padding-inline: 0.55rem;
+    font-size: 0.76rem;
+  }
+
+  .book-utility-actions .language-current,
+  .book-utility-actions .language-divider {
+    display: none;
+  }
+
+  .map-search {
+    max-width: 100%;
+  }
 }
