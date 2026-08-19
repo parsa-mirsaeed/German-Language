@@ -1,7 +1,7 @@
-import { accusativeCanonicalLesson } from "@/content/a1/unit-05-accusative-canonical";
+import { accusativeExerciseLesson } from "@/content/a1/unit-05-exercise-rich";
 import { buildPersianLessonLocalization } from "./build-persian-localization";
 
-export const unit05Persian = buildPersianLessonLocalization(accusativeCanonicalLesson, {
+export const unit05Persian = buildPersianLessonLocalization(accusativeExerciseLesson, {
   title: "آکوزاتیو: وقتی der به den تبدیل می‌شود",
   purpose:
     "مفعول مستقیم را تشخیص بده و تغییر آرتیکل‌هایی را که آلمانی در حالت Akkusativ لازم دارد انجام بده؛ به‌ویژه تغییر روشنِ مذکر der/ein → den/einen.",
@@ -132,6 +132,24 @@ export const unit05Persian = buildPersianLessonLocalization(accusativeCanonicalL
       prompt: "آرتیکل درست را انتخاب کن: Ich kaufe ___ Apfel.",
       explanation:
         "Apfel مذکر و مفعول مستقیمِ kaufen است؛ آرتیکل معین مذکر در Akkusativ برابر den است.",
+    },
+    {
+      id: "u05-akk-02",
+      prompt: "جمله را کامل کن: Ich habe ___ Bruder.",
+      explanation:
+        "Bruder مذکر و مفعول مستقیمِ haben است؛ بنابراین ein به einen تبدیل می‌شود.",
+    },
+    {
+      id: "u05-akk-03",
+      prompt: "جمله‌ای بساز با این معنی: امروز به بلیت نیاز دارم.",
+      explanation:
+        "Heute جایگاه اول را می‌گیرد، brauche فعلِ صرف‌شده در جایگاه دوم می‌ماند و das Ticket مفعول مستقیم خنثی در Akkusativ است.",
+    },
+    {
+      id: "u05-akk-04",
+      prompt: "خطای Akkusativ را اصلاح کن.",
+      explanation:
+        "Mann مذکر و مفعول مستقیمِ sehen است؛ بنابراین der باید به den تبدیل شود.",
     },
   ],
 });
