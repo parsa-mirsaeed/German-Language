@@ -12,10 +12,7 @@ import {
 import type { LessonLevel } from "@/content/schema/content-types";
 import type { Locale } from "@/i18n/config";
 import { getUiDictionary } from "@/i18n/ui-dictionary";
-import {
-  searchLessons,
-  type SearchDocument,
-} from "@/lib/search-core";
+import { searchLessons, type SearchDocument } from "@/lib/search-core";
 
 const levelValues: Array<"all" | LessonLevel> = ["all", "A1.1", "A1.2", "A1-bridge"];
 
@@ -98,6 +95,7 @@ export function SearchCommand({ index, locale }: SearchCommandProps) {
     () => searchLessons(index, query, { level: level === "all" ? undefined : level, limit: 8 }),
     [index, level, query],
   );
+  const resultDirection = locale === "fa" ? "rtl" : "ltr";
 
   return (
     <>
@@ -160,8 +158,8 @@ export function SearchCommand({ index, locale }: SearchCommandProps) {
                       <Link className="search-result" href={result.href} onClick={closeSearch}>
                         <span className="search-result-unit">{ui.search.unit} {String(result.unit).padStart(2, "0")} · {result.level}</span>
                         <strong dir="ltr" lang="de">{result.title}</strong>
-                        <span className="search-result-subtitle" dir="ltr" lang="en">{result.subtitle}</span>
-                        <small dir="ltr" lang="en">{result.snippet}</small>
+                        <span className="search-result-subtitle" dir={resultDirection} lang={locale}>{result.subtitle}</span>
+                        <small dir="auto">{result.snippet}</small>
                       </Link>
                     </li>
                   ))}
