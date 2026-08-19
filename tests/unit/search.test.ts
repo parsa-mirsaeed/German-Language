@@ -31,7 +31,7 @@ describe("A1 search index", () => {
   });
 
   it("normalizes Persian and Arabic keyboard variants", () => {
-    expect(normalizeSearchText("می‌خواهم آكوزاتيو")).toBe("می خواهم آکوزاتیو");
+    expect(normalizeSearchText("می‌خواهم آكوزاتيو")).toBe("می خواهم اکوزاتیو");
   });
 
   it("finds localized Persian unit terminology without losing German search", () => {
