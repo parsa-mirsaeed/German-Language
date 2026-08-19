@@ -4,6 +4,7 @@ import { a1Lessons } from "@/content/a1";
 import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/i18n/config";
+import { localizeSearchIndex } from "@/i18n/localized-search";
 import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { a1SearchIndex } from "@/lib/search";
 import { BookRail } from "./book-rail";
@@ -36,10 +37,9 @@ export function BookShell({ children, currentLessonSlug, locale }: BookShellProp
       active: lesson?.slug === currentLessonSlug,
     };
   });
-  const localizedSearchIndex = a1SearchIndex.map((document) => ({
-    ...document,
-    href: withLocale(locale, document.href),
-  }));
+  const localizedSearchIndex = localizeSearchIndex(a1SearchIndex, locale).map(
+    (document) => ({ ...document, href: withLocale(locale, document.href) }),
+  );
 
   return (
     <div className="book-shell">
