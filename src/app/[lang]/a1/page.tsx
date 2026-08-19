@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { SearchCommand } from "@/components/navigation/search-command";
 import { a1Lessons } from "@/content/a1";
-import { a1UnitMap } from "@/content/a1/unit-map";
+import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
 import { isLocale, withLocale } from "@/i18n/config";
+import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { a1SearchIndex } from "@/lib/search";
 
 type A1PageProps = {
@@ -18,6 +19,8 @@ export default async function A1Page({ params }: A1PageProps) {
     notFound();
   }
 
+  const ui = getUiDictionary(lang);
+  const units = getLocalizedA1UnitMap(lang);
   const localizedSearchIndex = a1SearchIndex.map((document) => ({
     ...document,
     href: withLocale(lang, document.href),
@@ -30,32 +33,29 @@ export default async function A1Page({ params }: A1PageProps) {
           <span className="brand-mark" aria-hidden="true">
             DE
           </span>
-          German A1 Grammar
+          {ui.brand}
         </Link>
         <div className="map-search">
           <LanguageSwitcher locale={lang} pathname="/a1" />
-          <SearchCommand index={localizedSearchIndex} />
+          <SearchCommand index={localizedSearchIndex} locale={lang} />
         </div>
       </header>
 
       <section className="map-page">
         <header className="map-header">
           <div>
-            <p className="eyebrow">12-unit grammar atlas</p>
-            <h1>German A1</h1>
-            <p>
-              One visible route from first sentence structure to completed-past
-              storytelling. Open lessons stay complete on one coherent surface.
-            </p>
+            <p className="eyebrow">{ui.map.eyebrow}</p>
+            <h1>{ui.map.title}</h1>
+            <p>{ui.map.body}</p>
           </div>
           <div className="map-stamp">
-            <strong>A1.1 → A1.2</strong>
-            <span>12 units · one system</span>
+            <strong dir="ltr">A1.1 → A1.2</strong>
+            <span>{ui.map.routeStamp}</span>
           </div>
         </header>
 
         <ol className="unit-map">
-          {a1UnitMap.map((unit) => {
+          {units.map((unit) => {
             const lesson = a1Lessons.find((candidate) => candidate.unit === unit.unit);
 
             return (
@@ -73,11 +73,11 @@ export default async function A1Page({ params }: A1PageProps) {
                     className="unit-action"
                     href={withLocale(lang, `/a1/${lesson.slug}`)}
                   >
-                    <span>Open lesson</span>
+                    <span>{ui.map.openLesson}</span>
                     <strong aria-hidden="true">↗</strong>
                   </Link>
                 ) : (
-                  <span className="unit-status">Planned</span>
+                  <span className="unit-status">{ui.map.planned}</span>
                 )}
               </li>
             );
