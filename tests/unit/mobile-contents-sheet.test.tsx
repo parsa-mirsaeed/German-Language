@@ -14,7 +14,7 @@ const items: BookNavItem[] = [
     title: "The German Sentence Engine",
     shortTitle: "Sentence Engine",
     goal: "Build first sentences.",
-    href: "/a1/verb-second-basics",
+    href: "/en/a1/verb-second-basics",
     active: true,
   },
   {
@@ -29,7 +29,7 @@ const items: BookNavItem[] = [
 describe("MobileContentsSheet", () => {
   it("opens from the trigger and closes with Escape while restoring focus", async () => {
     const user = userEvent.setup();
-    render(<MobileContentsSheet items={items} />);
+    render(<MobileContentsSheet items={items} locale="en" />);
 
     const trigger = screen.getByRole("button", { name: /contents/i });
     await user.click(trigger);
