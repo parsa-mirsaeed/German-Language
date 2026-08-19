@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { GrammarLesson } from "@/content/schema/content-types";
 import { a1UnitMap } from "@/content/a1/unit-map";
+import type { Locale } from "@/i18n/config";
+import { withLocale } from "@/i18n/config";
 import { ContrastBlock } from "./contrast-block";
 import { ExampleStream } from "./example-stream";
 import { GrammarFormula } from "./grammar-formula";
@@ -15,9 +17,10 @@ import { TeacherInk } from "./teacher-ink";
 
 type LessonRendererProps = {
   lesson: GrammarLesson;
+  locale: Locale;
 };
 
-export function LessonRenderer({ lesson }: LessonRendererProps) {
+export function LessonRenderer({ lesson, locale }: LessonRendererProps) {
   const unit = a1UnitMap.find((candidate) => candidate.unit === lesson.unit);
   const heroRow = lesson.paradigms?.[0]?.rows?.[0];
   const showInteractionLab = lesson.slug === "accusative-articles";
@@ -30,13 +33,13 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
       <article className="lesson-document">
         <header className="lesson-hero">
           <div className="lesson-hero-copy">
-            <Link className="lesson-breadcrumb" href="/a1">
+            <Link className="lesson-breadcrumb" href={withLocale(locale, "/a1")}>
               A1 map <span aria-hidden="true">/</span> Unit {lesson.unit}
             </Link>
             <p className="lesson-kicker">
               {lesson.level} · {unit?.title ?? `Unit ${lesson.unit}`}
             </p>
-            <h1 lang="de">{lesson.title.de}</h1>
+            <h1 dir="ltr" lang="de">{lesson.title.de}</h1>
             <p className="lesson-english-title">{lesson.title.en}</p>
             <p className="lesson-purpose">{lesson.purpose}</p>
           </div>
@@ -47,6 +50,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               <div
                 aria-label={`${heroRow[1]} changes to ${heroRow[2]} for the masculine accusative pattern`}
                 className="snapshot-morph"
+                dir="ltr"
                 role="img"
               >
                 <span>
@@ -62,7 +66,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
                 </span>
               </div>
             ) : (
-              <code lang="de">{lesson.formula?.[0]?.pattern}</code>
+              <code dir="ltr" lang="de">{lesson.formula?.[0]?.pattern}</code>
             )}
             <div className="snapshot-legend">
               <span>
@@ -196,7 +200,7 @@ export function LessonRenderer({ lesson }: LessonRendererProps) {
               ))}
             </ul>
           </div>
-          <Link className="next-map-link" href="/a1">
+          <Link className="next-map-link" href={withLocale(locale, "/a1")}>
             Back to the A1 map <span aria-hidden="true">→</span>
           </Link>
         </footer>
