@@ -2,112 +2,112 @@ import { placeDirectionLesson } from "@/content/a1/unit-10-place-direction";
 import { buildPersianLessonLocalization } from "./build-persian-localization";
 
 export const unit10Persian = buildPersianLessonLocalization(placeDirectionLesson, {
-  title: "مکان یا جهت؟ Wo، Wohin و حرف‌های اضافهٔ دوحالته",
+  title: "مکان یا جهت؟ حرف‌های اضافهٔ دوحالته",
   purpose:
-    "بین موقعیت ثابت و حرکت به‌سوی یک مقصد فرق بگذار و از حرف‌های اضافهٔ دوحالتهٔ پرکاربرد با Dativ برای «کجا؟» و Akkusativ برای «به کجا؟» استفاده کن.",
+    "با چند حرف اضافهٔ دوحالتهٔ پرکاربرد بین مکان ثابت و مقصد فرق بگذار: برای جایی که چیزی هست Dativ و برای جایی که چیزی به آن حرکت می‌کند Akkusativ را انتخاب کن.",
   formula: [
     {
-      label: "موقعیت ثابت",
-      note: "وقتی دربارهٔ جای ثابت می‌پرسی یا می‌گویی چیزی کجاست، Wo? معمولاً با Dativ می‌آید.",
+      label: "مکان ثابت",
+      note: "وقتی عبارت یک مکان ثابت را توصیف می‌کند، از Dativ استفاده کن: in der Küche، auf dem Tisch.",
     },
     {
-      label: "حرکت به مقصد",
-      note: "وقتی حرکت به داخل/روی/کنار یک مقصد مطرح است، Wohin? معمولاً با Akkusativ می‌آید.",
+      label: "مقصد",
+      note: "وقتی عبارت مقصدِ حرکت را می‌گوید، از Akkusativ استفاده کن: in die Küche، auf den Tisch.",
     },
   ],
   meaning: [
-    "حرف‌های اضافه‌ای مثل in، an، auf، unter، über، vor، hinter، neben و zwischen می‌توانند با Dativ یا Akkusativ بیایند.",
-    "انتخاب حالت در این درس به جنس اسم مربوط نیست؛ اول باید بفهمی جمله موقعیت ثابت را توصیف می‌کند یا حرکت به‌سوی مقصد را.",
-    "فارسی اغلب این تفاوت را با واژه‌هایی مثل «در/روی» در برابر «به/داخلِ/رویِ ... رفتن» نشان می‌دهد. از این تفاوت معنایی برای انتخاب حالت آلمانی استفاده کن، نه برای ترجمهٔ مکانیکی آرتیکل‌ها.",
+    "بعضی حرف‌های اضافهٔ رایج—مثل in، auf، an، unter، über، vor، hinter، neben و zwischen—می‌توانند هم با Dativ و هم با Akkusativ بیایند.",
+    "در A1 تصمیم اصلی معنایی است: مکان به سؤال Wo? جواب می‌دهد و Dativ می‌گیرد؛ مقصد یا جهت به Wohin? جواب می‌دهد و Akkusativ می‌گیرد.",
+    "صرفِ وجود حرکت به‌تنهایی به معنی Akkusativ نیست؛ عبارت باید حرکت به‌سوی یک مقصد را بیان کند.",
   ],
   usage: [
     {
       title: "بگو چیزی کجاست",
-      body: "Das Buch liegt auf dem Tisch. چون کتاب روی میز قرار دارد و مقصدی در کار نیست، auf با Dativ می‌آید.",
+      body: "Das Buch liegt auf dem Tisch. این عبارت به Wo? جواب می‌دهد و Dativ می‌گیرد.",
     },
     {
       title: "بگو چیزی به کجا می‌رود",
-      body: "Ich lege das Buch auf den Tisch. اینجا کتاب به سمت سطح میز منتقل می‌شود، پس auf با Akkusativ می‌آید.",
+      body: "Ich lege das Buch auf den Tisch. این عبارت به Wohin? جواب می‌دهد و مقصد را نام می‌برد، پس Akkusativ می‌گیرد.",
     },
     {
-      title: "Wo و Wohin را به‌عنوان سؤال راهنما استفاده کن",
-      body: "Wo? یعنی «کجا؟» برای موقعیت ثابت؛ Wohin? یعنی «به کجا؟» برای مقصد حرکت. این جفت برای تصمیم‌گیری سریع در A1 بسیار مفید است.",
+      title: "دربارهٔ اتاق‌ها و ساختمان‌ها صحبت کن",
+      body: "Ich bin in der Küche. Ich gehe in die Küche. این جفت، تفاوتِ مکان ثابت و مقصد را روشن نشان می‌دهد.",
     },
   ],
   recognitionCues: [
     {
       label: "Wo?",
-      note: "اگر پاسخ فقط محل قرارگرفتن را می‌گوید، الگوی Dativ را بررسی کن.",
+      note: "پاسخِ مربوط به مکان با یک حرف اضافهٔ دوحالته معمولاً Dativ را پیش‌بینی می‌کند.",
     },
     {
       label: "Wohin?",
-      note: "اگر پاسخ مقصد یا حرکت به یک محل را می‌گوید، الگوی Akkusativ را بررسی کن.",
+      note: "پاسخِ مربوط به مقصد با یک حرف اضافهٔ دوحالته معمولاً Akkusativ را پیش‌بینی می‌کند.",
     },
     {
-      label: "liegen / sein ↔ legen / stellen / gehen",
-      note: "فعل‌های حالت و مکان در برابر فعل‌های انتقال/حرکت می‌توانند سرنخ معنایی خوبی باشند.",
+      label: "in · auf · an",
+      note: "این حرف‌های اضافهٔ دوحالتهٔ بسیار رایج، مثال‌های خوبی برای شروع این الگو هستند.",
     },
   ],
   paradigms: [
     {
-      title: "مکان در برابر جهت",
-      columns: ["پرسش", "معنی", "حالت", "مثال"],
+      title: "مکان در برابر مقصد",
+      columns: ["سؤال", "حالت", "مذکر", "مؤنث", "خنثی"],
       rowLabels: ["Wo?", "Wohin?"],
     },
   ],
   examples: [
-    { translation: "کتاب روی میز است." },
-    { translation: "کتاب را روی میز می‌گذارم." },
-    { translation: "ما در سینما هستیم." },
-    { translation: "امشب به سینما می‌رویم." },
-    { translation: "گربه زیر صندلی خوابیده است." },
+    { translation: "من در آشپزخانه هستم." },
+    { translation: "من دارم به داخل آشپزخانه می‌روم." },
+    { translation: "گوشی روی میز قرار دارد." },
+    { translation: "گوشی را روی میز می‌گذاری؟" },
+    { translation: "کلید داخل کیف نیست." },
     {
-      translation: "حالت نادرست برای موقعیت ثابت → Dativ درست.",
-      note: "چون سؤال «کجا؟» است و حرکتی به مقصد وجود ندارد، auf dem Tisch لازم است.",
+      translation: "حالتِ مکان → حالتِ مقصد.",
+      note: "gehen در این جمله مقصد را بیان می‌کند، پس in die Küche لازم است.",
     },
   ],
   contrasts: [
     {
       explanation:
-        "حرف اضافه یکسان است، اما معنی مسیر را تعیین می‌کند: auf dem Tisch و im Kino موقعیت ثابت و Dativ را نشان می‌دهند؛ auf den Tisch و ins Kino مقصد حرکت و Akkusativ را.",
+        "در جملهٔ اول، عبارت مکانِ تصویر را بیان می‌کند و Dativ می‌گیرد. در جملهٔ دوم، عبارت مقصدِ عملِ آویزان‌کردن را بیان می‌کند و Akkusativ می‌گیرد.",
     },
   ],
   teacherNotes: [
     {
-      title: "یادداشت معلم — اول صحنه را تصور کن",
-      body: "قبل از فکرکردن به جدول آرتیکل‌ها، صحنه را تصور کن: چیزی از قبل آنجاست یا به آنجا می‌رود؟ وقتی این تصمیم روشن باشد، انتخاب Dativ/Akkusativ بسیار ساده‌تر می‌شود.",
+      title: "یادداشت معلم — Wo یا Wohin؟",
+      body: "این الگو را به شکل «حرکت در برابر بدون حرکت» یاد نگیر. سؤال معنایی درست را تمرین کن: مکان ثابت (Wo?) در برابر مقصد (Wohin?). فارسی می‌تواند به فهم «کجا؟ / به کجا؟» کمک کند، اما انتخاب آرتیکل همچنان یک الگوی آلمانی است.",
     },
   ],
   commonMistakes: [
     {
       explanation:
-        "liegen موقعیت ثابت را توصیف می‌کند؛ برای auf + اسم مذکر Tisch در این معنی، Dativ یعنی auf dem Tisch لازم است.",
+        "sein در این جمله مکان را توصیف می‌کند، پس in با Dativ می‌آید: in der Küche.",
     },
     {
       explanation:
-        "gehen به مقصد اشاره می‌کند؛ در این الگو in + das Kino به شکل Akkusativِ فشردهٔ ins Kino می‌آید.",
+        "این عبارت مقصدِ gehen را می‌گوید، پس in با Akkusativ می‌آید: in die Küche.",
     },
   ],
   speakingPrompts: [
     {
-      prompt: "به آلمانی بگو یک وسیلهٔ نزدیکت کجاست.",
-      support: "... ist/liegt auf/in/neben dem/der ...",
+      prompt: "به آلمانی بگو گوشی‌ات کجاست.",
+      support: "Mein Handy ist/liegt auf/in ...",
     },
     {
-      prompt: "به آلمانی بگو امروز یا امشب به کجا می‌روی.",
-      support: "Ich gehe heute/Abends in ...",
+      prompt: "به آلمانی بگو الان به کجا می‌روی.",
+      support: "Ich gehe in/auf ...",
     },
     {
-      prompt: "یک جفت جمله بساز: اول Wo، بعد Wohin با همان مکان.",
+      prompt: "با همان اتاق یا شیء یک جفت Wo?/Wohin? بساز.",
       support: "Ich bin ... / Ich gehe ...",
     },
   ],
   exercises: [
     {
       id: "u10-place-01",
-      prompt: "شکل درست را انتخاب کن: Das Buch liegt auf ___ Tisch.",
+      prompt: "عبارت درست را انتخاب کن: Ich bin ___.",
       explanation:
-        "liegen موقعیت ثابت را نشان می‌دهد؛ بنابراین auf با Dativ می‌آید و Tisch مذکر به dem Tisch تبدیل می‌شود.",
+        "Ich bin یک مکان را توصیف می‌کند (Wo?)، بنابراین حرف اضافهٔ دوحالتهٔ in با Dativ می‌آید: in der Küche.",
     },
   ],
 });
