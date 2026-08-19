@@ -1,12 +1,16 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const persianLesson = "/fa/a1/accusative-articles";
-const completedPersianBatch = [
+const pendingPersianLesson = "/fa/a1/dative-case-prepositions";
+const completedPersianLessons = [
   ["/fa/a1/verb-second-basics", "موتور جملهٔ آلمانی: فعل در جایگاه دوم", "من آلمانی یاد می‌گیرم.", "Ich lerne Deutsch."],
   ["/fa/a1/present-tense-conjugation", "زمان حال: صرف فعل در Präsens", "من آلمانی یاد می‌گیرم.", "Ich lerne Deutsch."],
   ["/fa/a1/nouns-gender-articles-plurals", "اسم، جنس دستوری، آرتیکل و جمع", "قهوه داغ است.", "Der Kaffee ist heiß."],
   ["/fa/a1/negation-nicht-kein", "منفی‌سازی با nicht و kein", "من ماشین ندارم.", "Ich habe kein Auto."],
+  ["/fa/a1/accusative-articles", "آکوزاتیو: وقتی der به den تبدیل می‌شود", "من قهوه را می‌خرم.", "Ich kaufe den Kaffee."],
+  ["/fa/a1/possession-and-pronouns", "مالکیت: mein، dein، sein و ihr", "این برادر من است.", "Das ist mein Bruder."],
+  ["/fa/a1/modal-verbs-sentence-bracket", "افعال مُدال و قاب جمله", "تو باید امروز کار کنی.", "Du musst heute arbeiten."],
+  ["/fa/a1/separable-verbs-time-word-order", "افعال جداشدنی، زمان و ترتیب واژه‌ها", "من ساعت هفت بیدار می‌شوم.", "Ich stehe um sieben Uhr auf."],
 ] as const;
 
 test("Persian home and map render native RTL application copy", async ({ page }) => {
@@ -20,8 +24,8 @@ test("Persian home and map render native RTL application copy", async ({ page })
   await expect(page.getByText("آکوزاتیو و مفعول مستقیم", { exact: true })).toBeVisible();
 });
 
-test("Persian Units 1 through 4 render complete native teaching copy", async ({ page }) => {
-  for (const [route, localizedTitle, translation, german] of completedPersianBatch) {
+test("Persian Units 1 through 8 render complete native teaching copy", async ({ page }) => {
+  for (const [route, localizedTitle, translation, german] of completedPersianLessons) {
     await page.goto(route);
     await expect(page.locator(".localization-pending")).toHaveCount(0);
     await expect(page.locator(".lesson-english-title")).toHaveText(localizedTitle);
@@ -34,20 +38,16 @@ test("Persian Units 1 through 4 render complete native teaching copy", async ({ 
   }
 });
 
-test("Persian lesson localizes UI while pending teaching copy is explicitly English", async ({ page }) => {
-  await page.goto(persianLesson);
-  await expect(page.getByRole("heading", { name: "فرمول / ساختار", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "اشتباه‌های رایج", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "انتقال به گفتار", exact: true })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "تمرین کوتاه", exact: true })).toBeVisible();
+test("unauthored Persian lesson keeps explicit English fallback semantics", async ({ page }) => {
+  await page.goto(pendingPersianLesson);
   await expect(page.getByText(/متن آموزشی فارسی این درس هنوز/)).toBeVisible();
   await expect(page.locator(".lesson-purpose")).toHaveAttribute("lang", "en");
   await expect(page.locator(".lesson-purpose")).toHaveAttribute("dir", "ltr");
-  await expect(page.getByRole("heading", { level: 1, name: "Akkusativ: der wird den" })).toHaveAttribute("lang", "de");
+  await expect(page.getByRole("heading", { level: 1, name: "Dativ: dem, der, den" })).toHaveAttribute("lang", "de");
 });
 
 test("Persian interactive controls, practice, speaking and search are localized", async ({ page }) => {
-  await page.goto(persianLesson);
+  await page.goto("/fa/a1/accusative-articles");
   await expect(page.getByText("ریل فعل در جایگاه دوم", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "بررسی پاسخ" }).first()).toBeVisible();
   await expect(page.getByText("حالت گفتاری", { exact: true })).toBeVisible();
