@@ -1,14 +1,17 @@
 import Link from "next/link";
+import type { Locale } from "@/i18n/config";
+import { withLocale } from "@/i18n/config";
 import type { BookNavItem } from "./mobile-contents-sheet";
 
 type BookRailProps = {
   items: BookNavItem[];
+  locale: Locale;
 };
 
-export function BookRail({ items }: BookRailProps) {
+export function BookRail({ items, locale }: BookRailProps) {
   return (
     <aside className="book-rail">
-      <Link className="rail-brand" href="/a1">
+      <Link className="rail-brand" href={withLocale(locale, "/a1")}>
         <span className="rail-brand-mark" aria-hidden="true">
           DE
         </span>

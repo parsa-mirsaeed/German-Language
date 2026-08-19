@@ -57,10 +57,10 @@ export function ExampleStream({ examples }: ExampleStreamProps) {
             <div className="example-meta">
               <span>{kindLabels[example.kind]}</span>
             </div>
-            <p className="example-de" lang="de">
+            <p className="example-de" dir="ltr" lang="de">
               <FocusSentence example={example} />
             </p>
-            <p className="example-en">{example.en}</p>
+            <p className="example-en" dir="ltr" lang="en">{example.en}</p>
             {example.note ? <p className="example-note">{example.note}</p> : null}
             {example.faNote ? (
               <p className="example-fa" dir="rtl" lang="fa">

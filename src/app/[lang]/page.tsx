@@ -1,16 +1,29 @@
 import Link from "next/link";
+import { LanguageSwitcher } from "@/components/navigation/language-switcher";
+import { isLocale, withLocale } from "@/i18n/config";
+import { notFound } from "next/navigation";
 
-export default function Home() {
+type HomePageProps = {
+  params: Promise<{ lang: string }>;
+};
+
+export default async function Home({ params }: HomePageProps) {
+  const { lang } = await params;
+
+  if (!isLocale(lang)) {
+    notFound();
+  }
+
   return (
     <main className="site-shell">
       <header className="topbar">
-        <Link className="brand" href="/">
+        <Link className="brand" href={withLocale(lang, "/")}>
           <span className="brand-mark" aria-hidden="true">
             DE
           </span>
           German A1 Grammar
         </Link>
-        <span className="eyebrow">Interactive workbook</span>
+        <LanguageSwitcher locale={lang} pathname="/" />
       </header>
 
       <section className="hero">
@@ -22,7 +35,7 @@ export default function Home() {
             usage, recognition, examples, mistakes, speaking, and practice —
             without scattering one topic across ten screens.
           </p>
-          <Link className="primary-link" href="/a1">
+          <Link className="primary-link" href={withLocale(lang, "/a1")}>
             Open the A1 book
           </Link>
         </div>

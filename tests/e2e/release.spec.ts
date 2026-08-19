@@ -1,8 +1,8 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const canonicalLesson = "/a1/accusative-articles";
-const bridgeLesson = "/a1/perfect-basics-a1-review";
+const canonicalLesson = "/en/a1/accusative-articles";
+const bridgeLesson = "/en/a1/perfect-basics-a1-review";
 
 async function expectNoDocumentOverflow(page: import("@playwright/test").Page) {
   const overflow = await page.evaluate(() => ({
@@ -16,7 +16,7 @@ test("reading layer remains useful without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
 
-  await page.goto("/a1");
+  await page.goto("/en/a1");
   await expect(page.getByRole("heading", { level: 1, name: "German A1" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open lesson" })).toHaveCount(12);
 
@@ -30,7 +30,7 @@ test("reading layer remains useful without JavaScript", async ({ browser }) => {
 });
 
 test("representative launch routes pass axe", async ({ page }) => {
-  for (const route of ["/", "/a1", bridgeLesson]) {
+  for (const route of ["/en", "/en/a1", bridgeLesson, "/fa/a1"]) {
     await page.goto(route);
     const accessibility = await new AxeBuilder({ page })
       .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
@@ -45,7 +45,7 @@ test("representative mobile and desktop routes do not overflow the document", as
     { width: 1440, height: 1000 },
   ]) {
     await page.setViewportSize(viewport);
-    for (const route of ["/a1", canonicalLesson, bridgeLesson]) {
+    for (const route of ["/en/a1", canonicalLesson, bridgeLesson, "/fa/a1/accusative-articles"]) {
       await page.goto(route);
       await expectNoDocumentOverflow(page);
     }
