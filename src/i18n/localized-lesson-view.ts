@@ -1,70 +1,117 @@
 import type { GrammarLesson } from "@/content/schema/content-types";
-import type { LessonLocalization } from "@/i18n/content-localization";
+import {
+  lessonLocalizationKeys,
+  type LessonLocalization,
+} from "@/i18n/content-localization";
+
+type LocalizedItem = { id: string };
+
+function findById<T extends LocalizedItem>(items: readonly T[], id: string): T | undefined {
+  return items.find((item) => item.id === id);
+}
 
 export function applyLessonLocalization(
   lesson: GrammarLesson,
   copy: LessonLocalization,
 ): GrammarLesson {
-  const formula = lesson.formula?.map((block, index) => ({
-    ...block,
-    label: copy.formula[index]?.label,
-    note: copy.formula[index]?.note,
-  }));
-  const recognitionCues = lesson.recognitionCues?.map((block, index) => ({
-    ...block,
-    label: copy.recognitionCues[index]?.label ?? block.label,
-    note: copy.recognitionCues[index]?.note,
-  }));
+  const keys = lessonLocalizationKeys(lesson);
+
+  const formula = lesson.formula?.map((block, index) => {
+    const localized = findById(copy.formula, keys.formula[index]);
+    return localized
+      ? { ...block, label: localized.label, note: localized.note }
+      : block;
+  });
+
+  const meaning = lesson.meaning.map((text, index) =>
+    findById(copy.meaning, keys.meaning[index])?.text ?? text,
+  );
+
+  const usage = lesson.usage.map((block, index) => {
+    const localized = findById(copy.usage, keys.usage[index]);
+    return localized
+      ? { title: localized.title, body: localized.body }
+      : block;
+  });
+
+  const recognitionCues = lesson.recognitionCues?.map((block, index) => {
+    const localized = findById(copy.recognitionCues, keys.recognitionCues[index]);
+    return localized
+      ? { ...block, label: localized.label, note: localized.note }
+      : block;
+  });
+
   const paradigms = lesson.paradigms?.map((table, index) => {
-    const localized = copy.paradigms[index];
+    const localized = findById(copy.paradigms, keys.paradigms[index]);
+    if (!localized) return table;
+
     return {
       ...table,
-      title: localized?.title ?? table.title,
-      columns: localized?.columns ?? table.columns,
+      title: localized.title,
+      columns: localized.columns,
       rows: table.rows.map((row, rowIndex) => [
-        localized?.rowLabels?.[rowIndex] ?? row[0],
+        localized.rowLabels?.[rowIndex] ?? row[0],
         ...row.slice(1),
       ]),
     };
   });
 
+  const examples = lesson.examples.map((example, index) => {
+    const localized = findById(copy.examples, keys.examples[index]);
+    return localized
+      ? { ...example, en: localized.translation, note: localized.note }
+      : example;
+  });
+
+  const contrasts = lesson.contrasts?.map((contrast, index) => {
+    const localized = findById(copy.contrasts, keys.contrasts[index]);
+    return localized
+      ? { ...contrast, explanation: localized.explanation }
+      : contrast;
+  });
+
+  const teacherNotes = lesson.teacherNotes?.map((note, index) => {
+    const localized = findById(copy.teacherNotes, keys.teacherNotes[index]);
+    return localized
+      ? { ...note, title: localized.title, body: localized.body }
+      : note;
+  });
+
+  const commonMistakes = lesson.commonMistakes.map((mistake, index) => {
+    const localized = findById(copy.commonMistakes, keys.commonMistakes[index]);
+    return localized
+      ? { ...mistake, explanation: localized.explanation }
+      : mistake;
+  });
+
+  const speakingPrompts = lesson.speakingPrompts.map((prompt, index) => {
+    const localized = findById(copy.speakingPrompts, keys.speakingPrompts[index]);
+    return localized
+      ? { ...prompt, prompt: localized.prompt, support: localized.support ?? prompt.support }
+      : prompt;
+  });
+
+  const exercises = lesson.exercises.map((exercise) => {
+    const localized = findById(copy.exercises, exercise.id);
+    return localized
+      ? { ...exercise, prompt: localized.prompt, explanation: localized.explanation }
+      : exercise;
+  });
+
   return {
     ...lesson,
-    title: { ...lesson.title, en: copy.title },
-    purpose: copy.purpose,
+    title: { ...lesson.title, en: copy.title || lesson.title.en },
+    purpose: copy.purpose || lesson.purpose,
     formula,
-    meaning: copy.meaning.map((item) => item.text),
-    usage: copy.usage.map(({ title, body }) => ({ title, body })),
+    meaning,
+    usage,
     recognitionCues,
     paradigms,
-    examples: lesson.examples.map((example, index) => ({
-      ...example,
-      en: copy.examples[index]?.translation ?? example.en,
-      note: copy.examples[index]?.note,
-    })),
-    contrasts: lesson.contrasts?.map((contrast, index) => ({
-      ...contrast,
-      explanation: copy.contrasts[index]?.explanation ?? contrast.explanation,
-    })),
-    teacherNotes: lesson.teacherNotes?.map((note, index) => ({
-      ...note,
-      title: copy.teacherNotes[index]?.title ?? note.title,
-      body: copy.teacherNotes[index]?.body ?? note.body,
-    })),
-    commonMistakes: lesson.commonMistakes.map((mistake, index) => ({
-      ...mistake,
-      explanation: copy.commonMistakes[index]?.explanation ?? mistake.explanation,
-    })),
-    speakingPrompts: lesson.speakingPrompts.map((prompt, index) => ({
-      ...prompt,
-      prompt: copy.speakingPrompts[index]?.prompt ?? prompt.prompt,
-      support: copy.speakingPrompts[index]?.support ?? prompt.support,
-    })),
-    exercises: lesson.exercises.map((exercise) => {
-      const localized = copy.exercises.find((item) => item.id === exercise.id);
-      return localized
-        ? { ...exercise, prompt: localized.prompt, explanation: localized.explanation }
-        : exercise;
-    }),
+    examples,
+    contrasts,
+    teacherNotes,
+    commonMistakes,
+    speakingPrompts,
+    exercises,
   };
 }
