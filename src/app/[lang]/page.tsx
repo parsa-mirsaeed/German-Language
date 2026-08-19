@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
 import { isLocale, withLocale } from "@/i18n/config";
-import { notFound } from "next/navigation";
+import { getUiDictionary } from "@/i18n/ui-dictionary";
 
 type HomePageProps = {
   params: Promise<{ lang: string }>;
@@ -14,6 +15,8 @@ export default async function Home({ params }: HomePageProps) {
     notFound();
   }
 
+  const ui = getUiDictionary(lang);
+
   return (
     <main className="site-shell">
       <header className="topbar">
@@ -21,30 +24,24 @@ export default async function Home({ params }: HomePageProps) {
           <span className="brand-mark" aria-hidden="true">
             DE
           </span>
-          German A1 Grammar
+          {ui.brand}
         </Link>
         <LanguageSwitcher locale={lang} pathname="/" />
       </header>
 
       <section className="hero">
         <div>
-          <p className="eyebrow">German, one system at a time</p>
-          <h1>See the grammar. Build the sentence.</h1>
-          <p className="hero-copy">
-            A structured German A1 book designed around formula, meaning,
-            usage, recognition, examples, mistakes, speaking, and practice —
-            without scattering one topic across ten screens.
-          </p>
+          <p className="eyebrow">{ui.home.eyebrow}</p>
+          <h1>{ui.home.title}</h1>
+          <p className="hero-copy">{ui.home.body}</p>
           <Link className="primary-link" href={withLocale(lang, "/a1")}>
-            Open the A1 book
+            {ui.home.openBook}
           </Link>
         </div>
 
         <aside className="hero-note">
-          <strong>Precision workbook × kinetic grammar atlas</strong>
-          The source workbook’s all-in-one clarity becomes a modern German
-          learning surface with reusable grammar boards, teacher annotations,
-          case-aware visuals, and motion that will teach rather than decorate.
+          <strong>{ui.home.noteTitle}</strong>
+          {ui.home.noteBody}
         </aside>
       </section>
     </main>
