@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { localizeSearchIndex } from "@/i18n/localized-search";
 import { a1SearchIndex } from "@/lib/search";
-import { searchLessons } from "@/lib/search-core";
+import { normalizeSearchText, searchLessons } from "@/lib/search-core";
 
 describe("A1 search index", () => {
   it("builds one stable document for every lesson route", () => {
@@ -14,11 +15,8 @@ describe("A1 search index", () => {
   it("ranks title matches deterministically", () => {
     const first = searchLessons(a1SearchIndex, "Akkusativ");
     const second = searchLessons(a1SearchIndex, "Akkusativ");
-
     expect(first[0].unit).toBe(5);
-    expect(first.map((result) => result.id)).toEqual(
-      second.map((result) => result.id),
-    );
+    expect(first.map((result) => result.id)).toEqual(second.map((result) => result.id));
   });
 
   it("finds lesson examples and formula text, not only titles", () => {
@@ -30,6 +28,17 @@ describe("A1 search index", () => {
     const results = searchLessons(a1SearchIndex, "ich", { level: "A1.2" });
     expect(results.length).toBeGreaterThan(0);
     expect(results.every((result) => result.level === "A1.2")).toBe(true);
+  });
+
+  it("normalizes Persian and Arabic keyboard variants", () => {
+    expect(normalizeSearchText("می‌خواهم آكوزاتيو")).toBe("می خواهم اکوزاتیو");
+  });
+
+  it("finds localized Persian unit terminology without losing German search", () => {
+    const persianIndex = localizeSearchIndex(a1SearchIndex, "fa");
+    expect(searchLessons(persianIndex, "آکوزاتیو")[0].unit).toBe(5);
+    expect(searchLessons(persianIndex, "مفعول مستقیم")[0].unit).toBe(5);
+    expect(searchLessons(persianIndex, "Akkusativ")[0].unit).toBe(5);
   });
 
   it("returns no results for an empty query", () => {

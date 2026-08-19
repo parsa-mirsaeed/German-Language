@@ -1,9 +1,11 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { a1Lessons } from "@/content/a1";
-import { a1UnitMap } from "@/content/a1/unit-map";
+import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/i18n/config";
+import { localizeSearchIndex } from "@/i18n/localized-search";
+import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { a1SearchIndex } from "@/lib/search";
 import { BookRail } from "./book-rail";
 import { LanguageSwitcher } from "./language-switcher";
@@ -20,7 +22,9 @@ type BookShellProps = {
 };
 
 export function BookShell({ children, currentLessonSlug, locale }: BookShellProps) {
-  const items: BookNavItem[] = a1UnitMap.map((unit) => {
+  const ui = getUiDictionary(locale);
+  const units = getLocalizedA1UnitMap(locale);
+  const items: BookNavItem[] = units.map((unit) => {
     const lesson = a1Lessons.find((candidate) => candidate.unit === unit.unit);
     const href = lesson ? withLocale(locale, `/a1/${lesson.slug}`) : undefined;
 
@@ -33,10 +37,9 @@ export function BookShell({ children, currentLessonSlug, locale }: BookShellProp
       active: lesson?.slug === currentLessonSlug,
     };
   });
-  const localizedSearchIndex = a1SearchIndex.map((document) => ({
-    ...document,
-    href: withLocale(locale, document.href),
-  }));
+  const localizedSearchIndex = localizeSearchIndex(a1SearchIndex, locale).map(
+    (document) => ({ ...document, href: withLocale(locale, document.href) }),
+  );
 
   return (
     <div className="book-shell">
@@ -45,15 +48,12 @@ export function BookShell({ children, currentLessonSlug, locale }: BookShellProp
         <header className="book-utility-bar">
           <Link className="mobile-brand" href={withLocale(locale, "/a1")}>
             <span aria-hidden="true">A1</span>
-            German Grammar
+            {ui.brand}
           </Link>
           <div className="book-utility-actions">
-            <LanguageSwitcher
-              locale={locale}
-              pathname={`/a1/${currentLessonSlug}`}
-            />
-            <SearchCommand index={localizedSearchIndex} />
-            <MobileContentsSheet items={items} />
+            <LanguageSwitcher locale={locale} pathname={`/a1/${currentLessonSlug}`} />
+            <SearchCommand index={localizedSearchIndex} locale={locale} />
+            <MobileContentsSheet items={items} locale={locale} />
           </div>
         </header>
         {children}

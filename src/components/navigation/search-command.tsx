@@ -10,23 +10,19 @@ import {
   useState,
 } from "react";
 import type { LessonLevel } from "@/content/schema/content-types";
-import {
-  searchLessons,
-  type SearchDocument,
-} from "@/lib/search-core";
+import type { Locale } from "@/i18n/config";
+import { getUiDictionary } from "@/i18n/ui-dictionary";
+import { searchLessons, type SearchDocument } from "@/lib/search-core";
 
-const levelOptions: Array<{ value: "all" | LessonLevel; label: string }> = [
-  { value: "all", label: "All A1" },
-  { value: "A1.1", label: "A1.1" },
-  { value: "A1.2", label: "A1.2" },
-  { value: "A1-bridge", label: "A1 bridge" },
-];
+const levelValues: Array<"all" | LessonLevel> = ["all", "A1.1", "A1.2", "A1-bridge"];
 
 type SearchCommandProps = {
   index: readonly SearchDocument[];
+  locale: Locale;
 };
 
-export function SearchCommand({ index }: SearchCommandProps) {
+export function SearchCommand({ index, locale }: SearchCommandProps) {
+  const ui = getUiDictionary(locale);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<"all" | LessonLevel>("all");
@@ -55,16 +51,12 @@ export function SearchCommand({ index }: SearchCommandProps) {
         openSearch(document.activeElement as HTMLElement | null);
       }
     };
-
     document.addEventListener("keydown", onShortcut);
     return () => document.removeEventListener("keydown", onShortcut);
   }, [openSearch]);
 
   useEffect(() => {
-    if (!open) {
-      return;
-    }
-
+    if (!open) return;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     inputRef.current?.focus();
@@ -75,24 +67,12 @@ export function SearchCommand({ index }: SearchCommandProps) {
         closeSearch();
         return;
       }
-
-      if (event.key !== "Tab") {
-        return;
-      }
-
+      if (event.key !== "Tab") return;
       const panel = panelRef.current;
       const focusable = panel
-        ? Array.from(
-            panel.querySelectorAll<HTMLElement>(
-              'input, select, a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-            ),
-          )
+        ? Array.from(panel.querySelectorAll<HTMLElement>('input, select, a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'))
         : [];
-
-      if (focusable.length === 0) {
-        return;
-      }
-
+      if (focusable.length === 0) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -112,81 +92,44 @@ export function SearchCommand({ index }: SearchCommandProps) {
   }, [closeSearch, open]);
 
   const results = useMemo(
-    () =>
-      searchLessons(index, query, {
-        level: level === "all" ? undefined : level,
-        limit: 8,
-      }),
+    () => searchLessons(index, query, { level: level === "all" ? undefined : level, limit: 8 }),
     [index, level, query],
   );
+  const resultDirection = locale === "fa" ? "rtl" : "ltr";
 
   return (
     <>
-      <button
-        className="search-trigger"
-        onClick={() => openSearch(triggerRef.current)}
-        ref={triggerRef}
-        type="button"
-      >
+      <button className="search-trigger" onClick={() => openSearch(triggerRef.current)} ref={triggerRef} type="button">
         <span aria-hidden="true">⌕</span>
-        Search
+        {ui.search.trigger}
         <kbd>⌘/Ctrl K</kbd>
       </button>
 
       {open ? (
         <div className="search-layer">
-          <button
-            aria-label="Close search"
-            className="search-backdrop"
-            onClick={closeSearch}
-            tabIndex={-1}
-            type="button"
-          />
-          <div
-            aria-describedby={descriptionId}
-            aria-labelledby={titleId}
-            aria-modal="true"
-            className="search-dialog"
-            id={dialogId}
-            ref={panelRef}
-            role="dialog"
-          >
+          <button aria-label={ui.search.closeAria} className="search-backdrop" onClick={closeSearch} tabIndex={-1} type="button" />
+          <div aria-describedby={descriptionId} aria-labelledby={titleId} aria-modal="true" className="search-dialog" id={dialogId} ref={panelRef} role="dialog">
             <header className="search-header">
               <div>
-                <p className="search-kicker">Local A1 index</p>
-                <h2 id={titleId}>Search the grammar book</h2>
-                <p id={descriptionId}>
-                  Search lesson titles, formulas, explanations, examples, mistakes, and speaking prompts.
-                </p>
+                <p className="search-kicker">{ui.search.kicker}</p>
+                <h2 id={titleId}>{ui.search.dialogTitle}</h2>
+                <p id={descriptionId}>{ui.search.description}</p>
               </div>
-              <button className="search-close" onClick={closeSearch} type="button">
-                Close
-              </button>
+              <button className="search-close" onClick={closeSearch} type="button">{ui.search.close}</button>
             </header>
 
             <div className="search-controls">
               <label className="search-input-wrap">
-                <span className="sr-only">Search German A1</span>
+                <span className="sr-only">{ui.search.inputLabel}</span>
                 <span aria-hidden="true">⌕</span>
-                <input
-                  autoComplete="off"
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Try “dative”, “mit dem Bus”, “möchte”…"
-                  ref={inputRef}
-                  type="search"
-                  value={query}
-                />
+                <input autoComplete="off" onChange={(event) => setQuery(event.target.value)} placeholder={ui.search.placeholder} ref={inputRef} type="search" value={query} />
               </label>
               <label className="search-filter">
-                <span className="sr-only">Filter search by level</span>
-                <select
-                  aria-label="Filter search by level"
-                  onChange={(event) => setLevel(event.target.value as "all" | LessonLevel)}
-                  value={level}
-                >
-                  {levelOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+                <span className="sr-only">{ui.search.filterLabel}</span>
+                <select aria-label={ui.search.filterLabel} onChange={(event) => setLevel(event.target.value as "all" | LessonLevel)} value={level}>
+                  {levelValues.map((value) => (
+                    <option key={value} value={value}>
+                      {value === "all" ? ui.search.allLevels : value === "A1-bridge" ? "A1 bridge" : value}
                     </option>
                   ))}
                 </select>
@@ -194,35 +137,29 @@ export function SearchCommand({ index }: SearchCommandProps) {
             </div>
 
             <div aria-live="polite" className="search-status">
-              {query.trim()
-                ? `${results.length} result${results.length === 1 ? "" : "s"}`
-                : "Type a word or phrase to search all 12 lessons."}
+              {query.trim() ? ui.search.resultCount(results.length) : ui.search.idleStatus}
             </div>
 
             <div className="search-results">
               {!query.trim() ? (
                 <div className="search-empty">
-                  <strong>Search the all-in-one route.</strong>
-                  <p>
-                    The index is generated from validated local lesson data. No remote search service or learner query is sent anywhere.
-                  </p>
+                  <strong>{ui.search.introTitle}</strong>
+                  <p>{ui.search.introBody}</p>
                 </div>
               ) : results.length === 0 ? (
                 <div className="search-empty">
-                  <strong>No lesson matched that search.</strong>
-                  <p>Try a German form, an English grammar term, or remove the level filter.</p>
+                  <strong>{ui.search.noResultsTitle}</strong>
+                  <p>{ui.search.noResultsBody}</p>
                 </div>
               ) : (
                 <ol>
                   {results.map((result) => (
                     <li key={result.id}>
                       <Link className="search-result" href={result.href} onClick={closeSearch}>
-                        <span className="search-result-unit">
-                          Unit {String(result.unit).padStart(2, "0")} · {result.level}
-                        </span>
-                        <strong lang="de">{result.title}</strong>
-                        <span className="search-result-subtitle">{result.subtitle}</span>
-                        <small>{result.snippet}</small>
+                        <span className="search-result-unit">{ui.search.unit} {String(result.unit).padStart(2, "0")} · {result.level}</span>
+                        <strong dir="ltr" lang="de">{result.title}</strong>
+                        <span className="search-result-subtitle" dir={resultDirection} lang={locale}>{result.subtitle}</span>
+                        <small dir="auto">{result.snippet}</small>
                       </Link>
                     </li>
                   ))}

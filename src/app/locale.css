@@ -13,67 +13,86 @@
   white-space: nowrap;
 }
 
-.language-current {
-  color: var(--forest);
+.language-current { color: var(--forest); }
+.language-divider { color: var(--line-strong); }
+.language-alternate { text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+.language-alternate:hover { color: var(--forest); }
+.map-search { align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+[dir="rtl"] body {
+  font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+  text-align: right;
 }
 
-.language-divider {
-  color: var(--line-strong);
+[dir="rtl"] .hero h1,
+[dir="rtl"] .map-header h1,
+[dir="rtl"] .lesson-hero h1 {
+  font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -0.035em;
 }
 
-.language-alternate {
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
+[dir="rtl"] .eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-.language-alternate:hover {
-  color: var(--forest);
+[dir="rtl"] .language-switcher,
+[dir="rtl"] .book-utility-actions,
+[dir="rtl"] .map-search {
+  direction: rtl;
 }
 
-.map-search {
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+[dir="rtl"] .lesson-breadcrumb,
+[dir="rtl"] .lesson-kicker,
+[dir="rtl"] .snapshot-morph,
+[dir="rtl"] .map-stamp strong,
+[dir="rtl"] code,
+[dir="rtl"] kbd {
+  unicode-bidi: isolate;
 }
 
-[dir="rtl"] .language-switcher {
-  font-family: Tahoma, "Segoe UI", sans-serif;
+[dir="rtl"] .unit-action strong,
+[dir="rtl"] .next-map-link span {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .localization-pending {
+  margin: 1rem 0 0;
+  padding: 0.8rem 1rem;
+  border-inline-start: 3px solid var(--gold);
+  border-radius: 0.65rem;
+  background: rgba(118, 83, 13, 0.08);
+  color: var(--ink-soft);
+  line-height: 1.8;
 }
 
 .german-island,
 [lang="de"] {
   direction: ltr;
   unicode-bidi: isolate;
+  text-align: left;
+}
+
+[lang="en"][dir="ltr"] {
+  unicode-bidi: isolate;
+  text-align: left;
 }
 
 @media (max-width: 760px) {
-  .topbar {
-    flex-wrap: wrap;
-  }
-
-  .book-utility-bar {
-    align-items: flex-start;
-  }
-
+  .topbar { flex-wrap: wrap; }
+  .book-utility-bar { align-items: flex-start; }
   .book-utility-actions {
     flex: 1 1 auto;
     min-width: 0;
     flex-wrap: wrap;
     justify-content: flex-end;
   }
-
   .book-utility-actions .language-switcher {
     min-height: 2.2rem;
     padding-inline: 0.55rem;
     font-size: 0.76rem;
   }
-
   .book-utility-actions .language-current,
-  .book-utility-actions .language-divider {
-    display: none;
-  }
-
-  .map-search {
-    max-width: 100%;
-  }
+  .book-utility-actions .language-divider { display: none; }
+  .map-search { max-width: 100%; }
 }

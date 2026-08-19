@@ -24,17 +24,18 @@ export type SearchOptions = {
 export function normalizeSearchText(value: string): string {
   return value
     .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("de")
-    .replace(/[^a-z0-9äöüß\s-]/gi, " ")
+    .replace(/ي|ى/g, "ی")
+    .replace(/ك/g, "ک")
+    .replace(/[\u0300-\u036f\u064B-\u065F\u0670\u06D6-\u06ED]/g, "")
+    .replace(/\u200c/g, " ")
+    .toLocaleLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
 function countOccurrences(haystack: string, needle: string): number {
-  if (!needle) {
-    return 0;
-  }
+  if (!needle) return 0;
 
   let count = 0;
   let position = 0;
@@ -51,22 +52,13 @@ function resultScore(document: SearchDocument, terms: string[]): number {
   let score = 0;
 
   for (const term of terms) {
-    if (!document.searchableText.includes(term)) {
-      return 0;
-    }
+    if (!document.searchableText.includes(term)) return 0;
 
-    if (title === term) {
-      score += 120;
-    } else if (title.startsWith(term)) {
-      score += 70;
-    } else if (title.includes(term)) {
-      score += 45;
-    }
+    if (title === term) score += 120;
+    else if (title.startsWith(term)) score += 70;
+    else if (title.includes(term)) score += 45;
 
-    if (aliases.includes(term)) {
-      score += 28;
-    }
-
+    if (aliases.includes(term)) score += 28;
     score += Math.min(18, countOccurrences(document.searchableText, term) * 3);
   }
 
@@ -75,9 +67,7 @@ function resultScore(document: SearchDocument, terms: string[]): number {
 
 function buildSnippet(document: SearchDocument, terms: string[]): string {
   const text = document.searchableText;
-  const positions = terms
-    .map((term) => text.indexOf(term))
-    .filter((position) => position >= 0);
+  const positions = terms.map((term) => text.indexOf(term)).filter((position) => position >= 0);
   const first = positions.length > 0 ? Math.min(...positions) : 0;
   const start = Math.max(0, first - 55);
   const end = Math.min(text.length, start + 145);
@@ -92,13 +82,9 @@ export function searchLessons(
   query: string,
   options: SearchOptions = {},
 ): SearchResult[] {
-  const terms = normalizeSearchText(query)
-    .split(" ")
-    .filter(Boolean);
+  const terms = normalizeSearchText(query).split(" ").filter(Boolean);
 
-  if (terms.length === 0) {
-    return [];
-  }
+  if (terms.length === 0) return [];
 
   const limit = options.limit ?? 8;
 
