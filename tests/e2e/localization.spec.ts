@@ -35,7 +35,10 @@ test("Persian interactive controls, practice, speaking and search are localized"
   await page.getByRole("button", { name: "جست‌وجو" }).click();
   const dialog = page.getByRole("dialog", { name: "جست‌وجو در کتاب گرامر" });
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByRole("searchbox", { name: "جست‌وجو در آلمانی A1" })).toBeFocused();
+  const input = dialog.getByRole("searchbox", { name: "جست‌وجو در آلمانی A1" });
+  await expect(input).toBeFocused();
+  await input.fill("مفعول مستقیم");
+  await expect(dialog.getByRole("link", { name: /Akkusativ: der wird den/i })).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
