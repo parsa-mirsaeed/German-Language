@@ -7,16 +7,19 @@ import "../grammar-interactions.css";
 import "../exercise-engine.css";
 import "../search.css";
 
-type LocaleLayoutProps = {
-  children: React.ReactNode;
+type LocaleParamsProps = {
   params: Promise<{ lang: string }>;
+};
+
+type LocaleLayoutProps = LocaleParamsProps & {
+  children: React.ReactNode;
 };
 
 export function generateStaticParams() {
   return locales.map((lang) => ({ lang }));
 }
 
-export async function generateMetadata({ params }: LocaleLayoutProps): Promise<Metadata> {
+export async function generateMetadata({ params }: LocaleParamsProps): Promise<Metadata> {
   const { lang } = await params;
 
   if (!isLocale(lang)) {
