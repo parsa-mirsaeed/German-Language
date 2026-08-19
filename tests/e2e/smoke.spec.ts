@@ -1,27 +1,45 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const canonicalLesson = "/a1/accusative-articles";
+const canonicalLesson = "/en/a1/accusative-articles";
 const fullA1Route = [
-  ["/a1/verb-second-basics", "Verb auf Position 2"],
-  ["/a1/present-tense-conjugation", "Präsens: Verben konjugieren"],
-  ["/a1/nouns-gender-articles-plurals", "Nomen, Genus und Artikel"],
-  ["/a1/negation-nicht-kein", "Negation: nicht und kein"],
+  ["/en/a1/verb-second-basics", "Verb auf Position 2"],
+  ["/en/a1/present-tense-conjugation", "Präsens: Verben konjugieren"],
+  ["/en/a1/nouns-gender-articles-plurals", "Nomen, Genus und Artikel"],
+  ["/en/a1/negation-nicht-kein", "Negation: nicht und kein"],
   [canonicalLesson, "Akkusativ: der wird den"],
-  ["/a1/possession-and-pronouns", "Possession: mein, dein, sein, ihr"],
-  ["/a1/modal-verbs-sentence-bracket", "Modalverben und Satzklammer"],
-  ["/a1/separable-verbs-time-word-order", "Trennbare Verben und Zeit"],
-  ["/a1/dative-case-prepositions", "Dativ: dem, der, den"],
-  ["/a1/place-direction-two-way-prepositions", "Ort oder Richtung?"],
-  ["/a1/commands-requests-connectors", "Bitten, Aufforderungen und Konnektoren"],
-  ["/a1/perfect-basics-a1-review", "Perfekt und A1-Integration"],
+  ["/en/a1/possession-and-pronouns", "Possession: mein, dein, sein, ihr"],
+  ["/en/a1/modal-verbs-sentence-bracket", "Modalverben und Satzklammer"],
+  ["/en/a1/separable-verbs-time-word-order", "Trennbare Verben und Zeit"],
+  ["/en/a1/dative-case-prepositions", "Dativ: dem, der, den"],
+  ["/en/a1/place-direction-two-way-prepositions", "Ort oder Richtung?"],
+  ["/en/a1/commands-requests-connectors", "Bitten, Aufforderungen und Konnektoren"],
+  ["/en/a1/perfect-basics-a1-review", "Perfekt und A1-Integration"],
 ] as const;
 
+test("legacy routes redirect to the preferred edition and language switching preserves the lesson", async ({ page }) => {
+  await page.goto("/a1/accusative-articles");
+  await expect(page).toHaveURL(/\/en\/a1\/accusative-articles$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
+
+  await page.getByRole("link", { name: "فارسی", exact: true }).click();
+  await expect(page).toHaveURL(/\/fa\/a1\/accusative-articles$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "fa");
+  await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+  const germanTitle = page.getByRole("heading", { level: 1, name: "Akkusativ: der wird den" });
+  await expect(germanTitle).toHaveAttribute("lang", "de");
+  await expect(germanTitle).toHaveAttribute("dir", "ltr");
+
+  await page.getByRole("link", { name: "English", exact: true }).click();
+  await expect(page).toHaveURL(/\/en\/a1\/accusative-articles$/);
+});
+
 test("A1 map exposes the complete 12-unit study route", async ({ page }) => {
-  await page.goto("/a1");
+  await page.goto("/en/a1");
   await expect(page.getByRole("heading", { level: 1, name: "German A1" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Open lesson" })).toHaveCount(12);
-  await page.locator('a[href="/a1/perfect-basics-a1-review"]').click();
+  await page.locator('a[href="/en/a1/perfect-basics-a1-review"]').click();
   await expect(page.getByRole("heading", { level: 1, name: "Perfekt und A1-Integration" })).toBeVisible();
   await expect(page.getByText(/A1-bridge/)).toBeVisible();
 });
@@ -135,7 +153,7 @@ test("exercise modes grade deterministically and progress survives reload", asyn
 });
 
 test("noncanonical lessons do not leak prototype grammar labs", async ({ page }) => {
-  await page.goto("/a1/modal-verbs-sentence-bracket");
+  await page.goto("/en/a1/modal-verbs-sentence-bracket");
   await expect(page.getByRole("heading", { name: "Interactive grammar lab", exact: true })).toHaveCount(0);
 });
 
