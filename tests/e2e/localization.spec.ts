@@ -10,9 +10,9 @@ const completedPersianLessons = [
   ["/fa/a1/possession-and-pronouns", "مالکیت: mein، dein، sein و ihr", "این برادر من است.", "Das ist mein Bruder."],
   ["/fa/a1/modal-verbs-sentence-bracket", "افعال مُدال و قاب جمله", "تو باید امروز کار کنی.", "Du musst heute arbeiten."],
   ["/fa/a1/separable-verbs-time-word-order", "افعال جداشدنی، زمان و ترتیب واژه‌ها", "من ساعت هفت بیدار می‌شوم.", "Ich stehe um sieben Uhr auf."],
-  ["/fa/a1/dative-case-prepositions", "داتیو: dem، der و den", "من با اتوبوس می‌آیم.", "Ich komme mit dem Bus."],
-  ["/fa/a1/place-direction-two-way-prepositions", "مکان یا جهت؟ Wo، Wohin و حرف‌های اضافهٔ دوحالته", "کتاب روی میز است.", "Das Buch liegt auf dem Tisch."],
-  ["/fa/a1/commands-requests-connectors", "درخواست، دستور ساده و پیونددهنده‌ها", "ممکن است لطفاً به من کمک کنید؟", "Könnten Sie mir bitte helfen?"],
+  ["/fa/a1/dative-case-prepositions", "داتیو و حرف‌های اضافهٔ داتیو", "من با اتوبوس رفت‌وآمد می‌کنم / می‌روم.", "Ich fahre mit dem Bus."],
+  ["/fa/a1/place-direction-two-way-prepositions", "مکان یا جهت؟ حرف‌های اضافهٔ دوحالته", "من در آشپزخانه هستم.", "Ich bin in der Küche."],
+  ["/fa/a1/commands-requests-connectors", "درخواست‌ها، دستورها و پیونددهنده‌ها", "لطفاً بیا داخل!", "Komm bitte rein!"],
   ["/fa/a1/perfect-basics-a1-review", "Perfekt و جمع‌بندی A1", "آلمانی یاد گرفتم / خواندم.", "Ich habe Deutsch gelernt."],
 ] as const;
 
