@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test";
 const searchButton = { name: /Search/i };
 
 test("Ctrl+K opens local search and routes a deterministic result", async ({ page }) => {
-  await page.goto("/a1");
+  await page.goto("/en/a1");
 
   await page.keyboard.press("Control+K");
   const dialog = page.getByRole("dialog", { name: "Search the grammar book" });
@@ -16,6 +16,7 @@ test("Ctrl+K opens local search and routes a deterministic result", async ({ pag
 
   const result = dialog.getByRole("link", { name: /Dativ: dem, der, den/i });
   await expect(result).toBeVisible();
+  await expect(result).toHaveAttribute("href", "/en/a1/dative-case-prepositions");
   await result.click();
 
   await expect(
@@ -24,7 +25,7 @@ test("Ctrl+K opens local search and routes a deterministic result", async ({ pag
 });
 
 test("search finds example text and remains available from a lesson", async ({ page }) => {
-  await page.goto("/a1/verb-second-basics");
+  await page.goto("/en/a1/verb-second-basics");
   await page.getByRole("button", searchButton).click();
 
   const dialog = page.getByRole("dialog", { name: "Search the grammar book" });
@@ -34,7 +35,7 @@ test("search finds example text and remains available from a lesson", async ({ p
 });
 
 test("search Escape restores focus and the open dialog passes axe", async ({ page }) => {
-  await page.goto("/a1");
+  await page.goto("/en/a1");
   const trigger = page.getByRole("button", searchButton);
   await trigger.focus();
   await page.keyboard.press("Enter");
@@ -55,7 +56,7 @@ test("search Escape restores focus and the open dialog passes axe", async ({ pag
 });
 
 test("search level filter narrows the local index", async ({ page }) => {
-  await page.goto("/a1");
+  await page.goto("/en/a1");
   await page.getByRole("button", searchButton).click();
 
   const dialog = page.getByRole("dialog", { name: "Search the grammar book" });
