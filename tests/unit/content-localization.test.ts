@@ -7,6 +7,7 @@ import {
   validateLessonLocalization,
 } from "@/i18n/content-localization";
 import { applyLessonLocalization } from "@/i18n/localized-lesson-view";
+import { resolveReleasedLessonLocalization } from "@/i18n/released-localization";
 
 describe("lesson localization contract", () => {
   it("derives a complete English localization from canonical content", () => {
@@ -33,11 +34,25 @@ describe("lesson localization contract", () => {
     );
   });
 
-  it("falls back explicitly when Persian copy is not authored", () => {
+  it("keeps explicit authoring fallback available before release", () => {
     const resolved = resolveLessonLocalization(accusativeCanonicalLesson, "fa");
     expect(resolved.requestedLocale).toBe("fa");
     expect(resolved.contentLocale).toBe("en");
     expect(resolved.isFallback).toBe(true);
+  });
+
+  it("requires complete Persian copy on released Persian routes", () => {
+    const resolved = resolveReleasedLessonLocalization(accusativeCanonicalLesson, "fa");
+    expect(resolved.contentLocale).toBe("fa");
+    expect(resolved.isFallback).toBe(false);
+
+    const missingLesson = {
+      ...accusativeCanonicalLesson,
+      id: "a1-missing-release-localization",
+    };
+    expect(() => resolveReleasedLessonLocalization(missingLesson, "fa")).toThrow(
+      "Missing complete Persian localization for a1-missing-release-localization",
+    );
   });
 
   it("applies localized blocks by stable ID even if localization arrays are reordered", () => {

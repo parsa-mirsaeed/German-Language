@@ -36,6 +36,18 @@
   text-transform: none;
 }
 
+[dir="rtl"] [lang="fa"] {
+  line-height: 1.85;
+}
+
+[dir="rtl"] .lesson-purpose[lang="fa"],
+[dir="rtl"] .lesson-english-title[lang="fa"],
+[dir="rtl"] .section-lede,
+[dir="rtl"] .hero-copy,
+[dir="rtl"] .unit-copy span {
+  text-wrap: pretty;
+}
+
 [dir="rtl"] .language-switcher,
 [dir="rtl"] .book-utility-actions,
 [dir="rtl"] .map-search {
@@ -54,16 +66,6 @@
 [dir="rtl"] .unit-action strong,
 [dir="rtl"] .next-map-link span {
   transform: scaleX(-1);
-}
-
-[dir="rtl"] .localization-pending {
-  margin: 1rem 0 0;
-  padding: 0.8rem 1rem;
-  border-inline-start: 3px solid var(--gold);
-  border-radius: 0.65rem;
-  background: rgba(118, 83, 13, 0.08);
-  color: var(--ink-soft);
-  line-height: 1.8;
 }
 
 .german-island,

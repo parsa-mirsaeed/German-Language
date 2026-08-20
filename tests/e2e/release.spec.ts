@@ -30,6 +30,11 @@ test("reading layer remains useful without JavaScript", async ({ browser }) => {
 });
 
 test("representative launch routes pass axe", async ({ page }) => {
+  // Axe must inspect a stable rendered state. Reduced motion keeps every semantic
+  // state visible while preventing transient interpolated colors from being
+  // mistaken for the authored foreground/background contrast.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+
   for (const route of ["/en", "/en/a1", bridgeLesson, "/fa/a1"]) {
     await page.goto(route);
     const accessibility = await new AxeBuilder({ page })
@@ -50,6 +55,24 @@ test("representative mobile and desktop routes do not overflow the document", as
       await expectNoDocumentOverflow(page);
     }
   }
+});
+
+test("bilingual sitemap and robots expose both released editions", async ({ request }) => {
+  const sitemapResponse = await request.get("/sitemap.xml");
+  expect(sitemapResponse.ok()).toBe(true);
+  const sitemap = await sitemapResponse.text();
+  expect(sitemap.match(/<url>/g)).toHaveLength(28);
+  expect(sitemap).toContain("/en/a1/verb-second-basics");
+  expect(sitemap).toContain("/fa/a1/verb-second-basics");
+  expect(sitemap).toContain('hreflang="en"');
+  expect(sitemap).toContain('hreflang="fa"');
+
+  const robotsResponse = await request.get("/robots.txt");
+  expect(robotsResponse.ok()).toBe(true);
+  const robots = await robotsResponse.text();
+  expect(robots).toContain("Allow: /");
+  expect(robots).toContain("Sitemap:");
+  expect(robots).toContain("/sitemap.xml");
 });
 
 test("keyboard-only practice and speaking path remains operable", async ({ page }) => {

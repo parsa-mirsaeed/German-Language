@@ -6,6 +6,8 @@ import {
   buildEnglishLessonLocalization,
   validateLessonLocalization,
 } from "../src/i18n/content-localization";
+import { locales } from "../src/i18n/config";
+import { localizeSearchIndex } from "../src/i18n/localized-search";
 import { a1SearchIndex } from "../src/lib/search";
 
 const errors: string[] = [];
@@ -21,6 +23,12 @@ if (a1Lessons.length !== 12) {
 
 if (a1UnitMap.length !== 12) {
   errors.push(`Expected exactly 12 unit-map entries; found ${a1UnitMap.length}`);
+}
+
+if (Object.keys(persianA1Localizations).length !== a1Lessons.length) {
+  errors.push(
+    `Expected complete Persian overlays for all ${a1Lessons.length} lessons; found ${Object.keys(persianA1Localizations).length}`,
+  );
 }
 
 for (let unit = 1; unit <= 12; unit += 1) {
@@ -101,9 +109,14 @@ for (const lesson of [...a1Lessons].sort((a, b) => a.unit - b.unit)) {
   }
 
   const persianLocalization = persianA1Localizations[lesson.id];
-  if (persianLocalization) {
+  if (!persianLocalization) {
+    errors.push(`${lesson.id}/fa: missing released Persian localization`);
+  } else {
     if (persianLocalization.locale !== "fa") {
       errors.push(`${lesson.id}/fa: locale must be fa`);
+    }
+    if (persianLocalization.status !== "complete") {
+      errors.push(`${lesson.id}/fa: released localization must be complete`);
     }
     for (const localizationError of validateLessonLocalization(lesson, persianLocalization)) {
       errors.push(`${lesson.id}/fa: ${localizationError}`);
@@ -131,6 +144,23 @@ if (JSON.stringify(searchRoutes) !== JSON.stringify(lessonRoutes)) {
   errors.push("Search-index routes do not exactly match the validated lesson routes");
 }
 
+for (const locale of locales) {
+  const localizedIndex = localizeSearchIndex(a1SearchIndex, locale);
+  const localizedRoutes = localizedIndex.map((document) => document.href).sort();
+  if (JSON.stringify(localizedRoutes) !== JSON.stringify(lessonRoutes)) {
+    errors.push(`${locale}: localized search routes do not match validated lesson routes`);
+  }
+
+  if (locale === "fa") {
+    for (const document of localizedIndex) {
+      const localization = persianA1Localizations[document.id];
+      if (!localization || document.subtitle !== localization.title) {
+        errors.push(`${document.id}/fa: Persian search subtitle must use the released lesson title`);
+      }
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error("Content validation failed:\n");
   for (const error of errors) {
@@ -140,5 +170,5 @@ if (errors.length > 0) {
 }
 
 console.log(
-  `Content validation passed for ${a1Lessons.length} lessons, ${exerciseIds.size} exercises, ${Object.keys(persianA1Localizations).length} Persian lesson overlays, and a matching ${a1SearchIndex.length}-document search index.`,
+  `Content validation passed for ${a1Lessons.length} lessons, ${exerciseIds.size} exercises, ${Object.keys(persianA1Localizations).length} complete Persian lesson overlays, and matching bilingual ${a1SearchIndex.length}-document search indexes.`,
 );

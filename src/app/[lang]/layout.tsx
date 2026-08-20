@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, localeDirection, locales } from "@/i18n/config";
+import { localizedAlternates } from "@/i18n/site-metadata";
 import { getUiDictionary } from "@/i18n/ui-dictionary";
+import { getSiteUrl } from "@/lib/site-url";
 import "../globals.css";
 import "../locale.css";
 import "../grammar-interactions.css";
@@ -20,10 +22,12 @@ export async function generateMetadata({ params }: LocaleParamsProps): Promise<M
   if (!isLocale(lang)) return {};
   const ui = getUiDictionary(lang);
   return {
+    metadataBase: getSiteUrl(),
     applicationName: ui.brand,
     category: "education",
     title: { default: ui.brand, template: `%s · ${ui.brand}` },
     description: ui.home.body,
+    alternates: localizedAlternates(lang, "/"),
     robots: { index: true, follow: true },
   };
 }
