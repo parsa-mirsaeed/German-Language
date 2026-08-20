@@ -85,7 +85,7 @@ PR 15 is the final release gate for the complete English/Persian edition. It doe
 - [x] German grammar/example islands remain explicit `lang="de" dir="ltr"` content.
 - [x] Language switching preserves the current lesson route.
 - [x] Persian application controls, practice, speaking, search, and grammar-lab labels are localized.
-- [x] Representative English/Persian routes pass axe checks.
+- [x] Representative English/Persian routes pass axe checks on a stable reduced-motion render while retaining the full WCAG tag set and contrast rule.
 - [x] Representative 390px and 1440px routes pass document-overflow checks.
 - [x] Reduced-motion, keyboard, no-JavaScript reading, practice, speaking, and search regressions remain green.
 
@@ -103,8 +103,10 @@ PR 15 is the final release gate for the complete English/Persian edition. It doe
 
 Implementation head `6d69ece654ab672f560c76c2905412864aecb7cf` passed GitHub Actions CI run **83** (`32364114875`) in full: frozen install, ESLint, strict TypeScript, strengthened bilingual content validation, 43 unit/component tests, production build, Chromium installation, and the complete browser regression suite. The same head reported a successful Vercel Preview, and the pull request had zero unresolved inline review threads at sign-off.
 
-Because this addendum changes only release documentation after that implementation gate, this checklist head must receive the same permanent CI and Vercel Preview checks before merge. Any new review finding must also be resolved on the final head.
+A later checklist-head rerun exposed a nondeterministic axe result caused by the animated lesson snapshot being sampled during an interpolated background-color frame. The release test was corrected to request `prefers-reduced-motion: reduce` before representative axe scans, which keeps every semantic/UI state present but freezes decorative motion before WCAG contrast measurement. No axe rule, WCAG tag, or contrast threshold was disabled or weakened.
+
+The resulting final release candidate must receive the complete permanent CI and Vercel Preview checks on its exact head. Any new review finding must also be resolved before merge.
 
 ### PR 15 release decision
 
-PR 15 may merge only when this checklist-only final head is green in permanent CI, Vercel Preview reports Ready for the same commit, and there are zero unresolved review threads. After merge, verify the resulting `main` commit through the production Vercel status and the `main` CI workflow before declaring the bilingual release shipped.
+PR 15 may merge only when the final release candidate is green in permanent CI, Vercel Preview reports Ready for the same commit, and there are zero unresolved review threads. After merge, verify the resulting `main` commit through the production Vercel status and the `main` CI workflow before declaring the bilingual release shipped.
