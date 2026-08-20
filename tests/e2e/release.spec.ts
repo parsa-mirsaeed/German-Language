@@ -52,6 +52,24 @@ test("representative mobile and desktop routes do not overflow the document", as
   }
 });
 
+test("bilingual sitemap and robots expose both released editions", async ({ request }) => {
+  const sitemapResponse = await request.get("/sitemap.xml");
+  expect(sitemapResponse.ok()).toBe(true);
+  const sitemap = await sitemapResponse.text();
+  expect(sitemap.match(/<url>/g)).toHaveLength(28);
+  expect(sitemap).toContain("/en/a1/verb-second-basics");
+  expect(sitemap).toContain("/fa/a1/verb-second-basics");
+  expect(sitemap).toContain('hreflang="en"');
+  expect(sitemap).toContain('hreflang="fa"');
+
+  const robotsResponse = await request.get("/robots.txt");
+  expect(robotsResponse.ok()).toBe(true);
+  const robots = await robotsResponse.text();
+  expect(robots).toContain("Allow: /");
+  expect(robots).toContain("Sitemap:");
+  expect(robots).toContain("/sitemap.xml");
+});
+
 test("keyboard-only practice and speaking path remains operable", async ({ page }) => {
   await page.goto(canonicalLesson);
 
