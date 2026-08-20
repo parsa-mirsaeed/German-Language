@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LanguageSwitcher } from "@/components/navigation/language-switcher";
@@ -6,12 +7,25 @@ import { a1Lessons } from "@/content/a1";
 import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
 import { isLocale, withLocale } from "@/i18n/config";
 import { localizeSearchIndex } from "@/i18n/localized-search";
+import { localizedAlternates } from "@/i18n/site-metadata";
 import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { a1SearchIndex } from "@/lib/search";
 
 type A1PageProps = {
   params: Promise<{ lang: string }>;
 };
+
+export async function generateMetadata({ params }: A1PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  if (!isLocale(lang)) return {};
+  const ui = getUiDictionary(lang);
+
+  return {
+    title: ui.map.title,
+    description: ui.map.body,
+    alternates: localizedAlternates(lang, "/a1"),
+  };
+}
 
 export default async function A1Page({ params }: A1PageProps) {
   const { lang } = await params;
