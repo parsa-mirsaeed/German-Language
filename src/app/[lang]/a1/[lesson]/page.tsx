@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { LessonRenderer } from "@/components/grammar/lesson-renderer";
 import { BookShell } from "@/components/navigation/book-shell";
 import { a1Lessons } from "@/content/a1";
+import { persianA1Localizations } from "@/content/locales/fa/a1";
+import { resolveLessonLocalization } from "@/i18n/content-localization";
 import { isLocale } from "@/i18n/config";
+import { localizedAlternates } from "@/i18n/site-metadata";
 import { getLessonBySlug } from "@/lib/content/lesson-utils";
 
 type LessonPageProps = {
@@ -24,9 +27,16 @@ export async function generateMetadata({
     return {};
   }
 
+  const resolved = resolveLessonLocalization(
+    lesson,
+    lang,
+    persianA1Localizations[lesson.id],
+  );
+
   return {
-    title: `${lesson.title.de} — ${lesson.title.en}`,
-    description: lesson.purpose,
+    title: `${lesson.title.de} — ${resolved.copy.title}`,
+    description: resolved.copy.purpose,
+    alternates: localizedAlternates(lang, `/a1/${lesson.slug}`),
   };
 }
 
