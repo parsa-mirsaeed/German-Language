@@ -41,6 +41,15 @@ describe("A1 search index", () => {
     expect(searchLessons(persianIndex, "Akkusativ")[0].unit).toBe(5);
   });
 
+  it("indexes complete Persian lesson teaching copy, not only the unit map", () => {
+    const persianIndex = localizeSearchIndex(a1SearchIndex, "fa");
+    expect(searchLessons(persianIndex, "با چه وسیله‌ای")[0].unit).toBe(9);
+    expect(searchLessons(persianIndex, "اول بگذار حرف اضافه حالت را انتخاب کند")[0].unit).toBe(9);
+    expect(persianIndex.find((document) => document.unit === 9)?.subtitle).toBe(
+      "داتیو و حرف‌های اضافهٔ داتیو",
+    );
+  });
+
   it("returns no results for an empty query", () => {
     expect(searchLessons(a1SearchIndex, "   ")).toEqual([]);
   });
