@@ -1,11 +1,10 @@
 import Link from "next/link";
 import type { GrammarLesson } from "@/content/schema/content-types";
-import { persianA1Localizations } from "@/content/locales/fa/a1";
 import { getLocalizedA1UnitMap } from "@/i18n/a1-unit-map";
-import { resolveLessonLocalization } from "@/i18n/content-localization";
 import type { Locale } from "@/i18n/config";
 import { withLocale } from "@/i18n/config";
 import { applyLessonLocalization } from "@/i18n/localized-lesson-view";
+import { resolveReleasedLessonLocalization } from "@/i18n/released-localization";
 import { getUiDictionary } from "@/i18n/ui-dictionary";
 import { ContrastBlock } from "./contrast-block";
 import { ExampleStream } from "./example-stream";
@@ -23,7 +22,7 @@ type LessonRendererProps = { lesson: GrammarLesson; locale: Locale };
 
 export function LessonRenderer({ lesson, locale }: LessonRendererProps) {
   const ui = getUiDictionary(locale);
-  const resolved = resolveLessonLocalization(lesson, locale, persianA1Localizations[lesson.id]);
+  const resolved = resolveReleasedLessonLocalization(lesson, locale);
   const viewLesson = applyLessonLocalization(lesson, resolved.copy);
   const contentLocale = resolved.contentLocale;
   const contentDir = contentLocale === "fa" ? "rtl" : "ltr";
@@ -50,7 +49,6 @@ export function LessonRenderer({ lesson, locale }: LessonRendererProps) {
             <h1 dir="ltr" lang="de">{lesson.title.de}</h1>
             <p className="lesson-english-title" {...copyProps}>{viewLesson.title.en}</p>
             <p className="lesson-purpose" {...copyProps}>{viewLesson.purpose}</p>
-            {resolved.isFallback ? <p className="localization-pending" dir={locale === "fa" ? "rtl" : "ltr"} lang={locale}>{ui.lesson.pendingTranslation}</p> : null}
           </div>
 
           <div className="lesson-hero-snapshot">
