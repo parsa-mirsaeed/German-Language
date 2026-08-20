@@ -3,9 +3,8 @@ import { notFound } from "next/navigation";
 import { LessonRenderer } from "@/components/grammar/lesson-renderer";
 import { BookShell } from "@/components/navigation/book-shell";
 import { a1Lessons } from "@/content/a1";
-import { persianA1Localizations } from "@/content/locales/fa/a1";
-import { resolveLessonLocalization } from "@/i18n/content-localization";
 import { isLocale } from "@/i18n/config";
+import { resolveReleasedLessonLocalization } from "@/i18n/released-localization";
 import { localizedAlternates } from "@/i18n/site-metadata";
 import { getLessonBySlug } from "@/lib/content/lesson-utils";
 
@@ -27,11 +26,7 @@ export async function generateMetadata({
     return {};
   }
 
-  const resolved = resolveLessonLocalization(
-    lesson,
-    lang,
-    persianA1Localizations[lesson.id],
-  );
+  const resolved = resolveReleasedLessonLocalization(lesson, lang);
 
   return {
     title: `${lesson.title.de} — ${resolved.copy.title}`,
