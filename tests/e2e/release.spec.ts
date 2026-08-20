@@ -30,6 +30,11 @@ test("reading layer remains useful without JavaScript", async ({ browser }) => {
 });
 
 test("representative launch routes pass axe", async ({ page }) => {
+  // Axe must inspect a stable rendered state. Reduced motion keeps every semantic
+  // state visible while preventing transient interpolated colors from being
+  // mistaken for the authored foreground/background contrast.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+
   for (const route of ["/en", "/en/a1", bridgeLesson, "/fa/a1"]) {
     await page.goto(route);
     const accessibility = await new AxeBuilder({ page })
