@@ -41,6 +41,27 @@ test("all 12 Persian lessons render complete native teaching copy", async ({ pag
   }
 });
 
+test("Persian lesson head uses localized metadata and reciprocal language alternates", async ({ page }) => {
+  await page.goto("/fa/a1/dative-case-prepositions");
+  await expect(page).toHaveTitle(/Dativ: dem, der, den — داتیو و حرف‌های اضافهٔ داتیو/);
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    /حالت Dativ را در الگوهای رایج A1 تشخیص بده/,
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    /\/fa\/a1\/dative-case-prepositions$/,
+  );
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
+    "href",
+    /\/en\/a1\/dative-case-prepositions$/,
+  );
+  await expect(page.locator('link[rel="alternate"][hreflang="fa"]')).toHaveAttribute(
+    "href",
+    /\/fa\/a1\/dative-case-prepositions$/,
+  );
+});
+
 test("Persian interactive controls, practice, speaking and search are localized", async ({ page }) => {
   await page.goto("/fa/a1/accusative-articles");
   await expect(page.getByText("ریل فعل در جایگاه دوم", { exact: true })).toBeVisible();
@@ -54,6 +75,9 @@ test("Persian interactive controls, practice, speaking and search are localized"
   await expect(input).toBeFocused();
   await input.fill("مفعول مستقیم");
   await expect(dialog.getByRole("link", { name: /Akkusativ: der wird den/i })).toBeVisible();
+
+  await input.fill("با چه وسیله‌ای");
+  await expect(dialog.getByRole("link", { name: /Dativ: dem, der, den/i })).toBeVisible();
 
   const accessibility = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
